@@ -1,0 +1,85 @@
+---
+import Section from "../layout/Section.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Highlight from "../ui/Highlight.astro";
+import Button from "../ui/Button.astro";
+import GlowOrb from "../animations/GlowOrb.astro";
+import FadeIn from "../animations/FadeIn.tsx";
+import { GOOGLE_FORM_URL } from "../../lib/constants";
+
+const plans = [
+  {
+    name: "Project Build",
+    price: "From $1,200",
+    unit: "per project",
+    description: "One complete workflow. Scoped, built, and handed off.",
+    features: [
+      "One core workflow automated",
+      "Built around your existing tools",
+      "Delivered and fully documented",
+      "Ideal for a single high impact process",
+    ],
+    cta: "Start a Project",
+  },
+  {
+    name: "Complete AI Systems",
+    price: "$5,000 to $15,000+",
+    unit: "per system",
+    description: "For businesses ready to automate multiple workflows with a full multi-agent system.",
+    features: [
+      "Multiple AI employees working together",
+      "Custom architecture for your business",
+      "Priority build and support",
+      "The most ground covered in one build",
+    ],
+    cta: "Scope My System",
+  },
+  {
+    name: "Retainer",
+    price: "Custom",
+    unit: "per month",
+    description: "Ongoing scope for teams that keep shipping automation.",
+    features: [
+      "Continuous improvements and new builds",
+      "Priority access to the operator",
+      "Scope adjusts as your business grows",
+      "Best for teams automating regularly",
+    ],
+    cta: "Talk Retainer",
+  },
+];
+---
+
+<Section tone="night">
+  <GlowOrb color="purple" size={460} class="-top-24 left-1/4" />
+
+  <SectionHeading eyebrow="Ways to work together" align="center" class="mx-auto" headingLead="Pick the">
+    <Highlight pin="bottom-left">way in.</Highlight>
+  </SectionHeading>
+
+  <div class="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
+    {plans.map((plan, i) => (
+      <FadeIn client:visible delay={i * 100} className="h-full">
+        <div class="flex h-full flex-col rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-8 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-neon-purple/50 hover:shadow-[0_0_35px_-12px_rgba(143,92,255,0.55)]">
+          <p class="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-[var(--eyebrow-fg)]">{plan.name}</p>
+          <p class="mt-3 font-display text-3xl font-extrabold leading-none text-[var(--fg)]">{plan.price}</p>
+          <p class="mt-1 text-xs text-[var(--fg)]/50">{plan.unit}</p>
+          <p class="mt-4 border-t border-[var(--divider)] pt-4 text-sm text-[var(--fg-muted)]">{plan.description}</p>
+
+          <ul class="mt-6 flex-1 space-y-3">
+            {plan.features.map((feature) => (
+              <li class="flex items-start gap-2.5 text-[13.5px] text-[var(--fg)]/80">
+                <span class="mt-0.5 text-[var(--eyebrow-fg)]">✓</span>
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <Button href={GOOGLE_FORM_URL} external variant="ghost" size="md" class="mt-8 w-full justify-center">
+            {plan.cta}
+          </Button>
+        </div>
+      </FadeIn>
+    ))}
+  </div>
+</Section>

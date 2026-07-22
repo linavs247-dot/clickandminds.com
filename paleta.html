@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identidad Visual — Paleta de Marca</title>
+<style>
+  :root {
+    /* CORE */
+    --ink: #1E1A5E;
+    --violet: #6B5FE8;
+    --lavender: #C4B5FD;
+    --cream: #FAF5EE;
+    --dot: #D8D2C6;
+    --night: #0F0A2E;
+
+    /* SOCIAL */
+    --lime: #DFEE60;
+    --butter: #FCEA98;
+    --blush: #F9B8D4;
+
+    /* WEB / FUTURO */
+    --magenta: #FF2D95;
+    --cyan: #22D3EE;
+    --electric: #9333EA;
+
+    --font-display: 'Fraunces', 'Georgia', serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+    background-size: 18px 18px;
+    color: var(--ink);
+    line-height: 1.5;
+    padding: 24px 16px 80px;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  /* HEADER */
+  .hero {
+    padding: 32px 0 24px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(38px, 9vw, 60px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  h1 .accent {
+    background: var(--lime);
+    padding: 0 8px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: var(--ink);
+    opacity: 0.75;
+    max-width: 520px;
+  }
+
+  /* SECTIONS */
+  section { margin-bottom: 48px; }
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  h2 .num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--violet);
+    letter-spacing: 0.1em;
+  }
+  .section-desc {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 20px;
+    max-width: 560px;
+  }
+
+  /* COLOR GRID */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 0 rgba(30, 26, 94, 0.08);
+  }
+  .swatch .chip {
+    height: 96px;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+  }
+  .swatch .meta {
+    background: white;
+    padding: 10px 12px;
+  }
+  .swatch .name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.2;
+  }
+  .swatch .hex {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    opacity: 0.6;
+    margin-top: 2px;
+  }
+  .swatch .tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.85);
+    color: var(--ink);
+  }
+  .swatch .tag.dark {
+    background: rgba(0,0,0,0.4);
+    color: white;
+  }
+
+  /* BRIDGE */
+  .bridge {
+    background: linear-gradient(to right, var(--cream) 0%, var(--cream) 20%, var(--violet) 50%, var(--night) 80%, var(--night) 100%);
+    border-radius: 20px;
+    padding: 28px 22px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .bridge-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .bridge-labels span:first-child { color: var(--ink); }
+  .bridge-labels span:last-child { color: var(--cyan); }
+  .bridge h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 1.1;
+    color: white;
+    max-width: 400px;
+    text-shadow: 0 1px 20px rgba(0,0,0,0.3);
+  }
+  .bridge h3 .h {
+    background: var(--lime);
+    color: var(--ink);
+    padding: 0 6px;
+  }
+
+  /* RULES */
+  .rules {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1.5px solid var(--lavender);
+  }
+  .rule {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--lavender);
+  }
+  .rule:last-child { border-bottom: none; }
+  .rule-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--violet);
+    padding-top: 3px;
+    min-width: 24px;
+  }
+  .rule-body strong {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 3px;
+  }
+  .rule-body p {
+    font-size: 14px;
+    opacity: 0.75;
+  }
+
+  /* PROPORTIONS BAR */
+  .prop-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 6px;
+  }
+  .prop-bar {
+    display: flex;
+    height: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .prop-bar > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--lavender);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    opacity: 0.5;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Sistema visual · v1</div>
+    <h1>Una marca,<br><span class="accent">dos modos.</span></h1>
+    <p class="subtitle">Los morados son la columna vertebral. Los acentos cambian según el contexto: cálidos para redes, eléctricos para el website.</p>
+  </header>
+
+  <!-- CORE -->
+  <section>
+    <h2><span class="num">01</span> Núcleo</h2>
+    <p class="section-desc">Estos seis colores aparecen en <strong>todo</strong>. Son el pegamento entre tus posts y tu website.</p>
+    <div class="swatches">
+      <div class="swatch">
+        <div class="chip" style="background:#1E1A5E"><span class="tag dark">Titulares</span></div>
+        <div class="meta"><div class="name">Índigo profundo</div><div class="hex">#1E1A5E</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#6B5FE8"><span class="tag dark">Marca</span></div>
+        <div class="meta"><div class="name">Violeta señal</div><div class="hex">#6B5FE8</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#C4B5FD"><span class="tag">Soporte</span></div>
+        <div class="meta"><div class="name">Lavanda</div><div class="hex">#C4B5FD</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#FAF5EE;background-image:radial-gradient(#D8D2C6 1px,transparent 1px);background-size:12px 12px"><span class="tag">Fondo claro</span></div>
+        <div class="meta"><div class="name">Crema dotted</div><div class="hex">#FAF5EE</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#0F0A2E"><span class="tag dark">Fondo web</span></div>
+        <div class="meta"><div class="name">Noche</div><div class="hex">#0F0A2E</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#DFEE60"><span class="tag">Firma</span></div>
+        <div class="meta"><div class="name">Lima highlight</div><div class="hex">#DFEE60</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL -->
+  <section>
+    <h2><span class="num">02</span> Modo social</h2>
+    <p class="section-desc">Instagram y LinkedIn. Fondo crema, tipografía chunky, personalidad cálida.</p>
+    <div class="swatches">
+      <div class="swatch">
+        <div class="chip" style="background:#FCEA98"><span class="tag">Detalles</span></div>
+        <div class="meta"><div class="name">Amarillo pastel</div><div class="hex">#FCEA98</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#F9B8D4"><span class="tag">Iconos</span></div>
+        <div class="meta"><div class="name">Rosa suave</div><div class="hex">#F9B8D4</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#E0DCFF"><span class="tag">Cintas</span></div>
+        <div class="meta"><div class="name">Lila papel</div><div class="hex">#E0DCFF</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEB -->
+  <section>
+    <h2><span class="num">03</span> Modo web / futurista</h2>
+    <p class="section-desc">Website y videos con IA. Fondo oscuro, acentos eléctricos, sensación pro.</p>
+    <div class="swatches">
+      <div class="swatch">
+        <div class="chip" style="background:#FF2D95;box-shadow:inset 0 0 30px rgba(255,45,149,0.6)"><span class="tag dark">Acento 1</span></div>
+        <div class="meta"><div class="name">Magenta neón</div><div class="hex">#FF2D95</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#22D3EE;box-shadow:inset 0 0 30px rgba(34,211,238,0.6)"><span class="tag dark">Acento 2</span></div>
+        <div class="meta"><div class="name">Cyan eléctrico</div><div class="hex">#22D3EE</div></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#9333EA;box-shadow:inset 0 0 30px rgba(147,51,234,0.6)"><span class="tag dark">Puente</span></div>
+        <div class="meta"><div class="name">Púrpura brillante</div><div class="hex">#9333EA</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRIDGE -->
+  <section>
+    <h2><span class="num">04</span> El puente</h2>
+    <p class="section-desc">Así se conectan tus dos mundos. El violeta y el highlight lima aparecen en ambos.</p>
+    <div class="bridge">
+      <div class="bridge-labels">
+        <span>◄ Post IG/LinkedIn</span>
+        <span>Website ►</span>
+      </div>
+      <h3>Del <span class="h">post</span> a la web sin romper la marca.</h3>
+    </div>
+  </section>
+
+  <!-- PROPORTIONS -->
+  <section>
+    <h2><span class="num">05</span> Proporciones</h2>
+    <p class="section-desc">Regla 60/30/10 aplicada a cada contexto.</p>
+
+    <div style="margin-bottom:20px">
+      <div class="prop-label"><span>En un post social</span><span>60·30·10</span></div>
+      <div class="prop-bar">
+        <div style="background:#FAF5EE;flex:60;color:#1E1A5E;text-shadow:none">Fondo crema 60%</div>
+        <div style="background:#1E1A5E;flex:30">Índigo 30%</div>
+        <div style="background:#DFEE60;flex:10;color:#1E1A5E;text-shadow:none">Lima 10%</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="prop-label"><span>En el website</span><span>60·30·10</span></div>
+      <div class="prop-bar">
+        <div style="background:#0F0A2E;flex:60">Noche 60%</div>
+        <div style="background:#6B5FE8;flex:25">Violeta 25%</div>
+        <div style="background:#FF2D95;flex:10">Magenta 10%</div>
+        <div style="background:#DFEE60;flex:5;color:#1E1A5E;text-shadow:none">5%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section>
+    <h2><span class="num">06</span> Reglas de uso</h2>
+    <div class="rules">
+      <div class="rule">
+        <div class="rule-num">01</div>
+        <div class="rule-body">
+          <strong>El lima solo resalta.</strong>
+          <p>Nunca de fondo, nunca en bloques grandes. Es tu firma — úsalo una vez por pieza, máximo dos.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-num">02</div>
+        <div class="rule-body">
+          <strong>El violeta señal es tu color de marca.</strong>
+          <p>Logos, botones principales, enlaces. Aparece en ambos modos como el "esto es mío".</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-num">03</div>
+        <div class="rule-body">
+          <strong>En el web, alterna secciones.</strong>
+          <p>No hagas todo oscuro. Hero con video futurista, luego una sección crema dotted con tus casos, luego oscura otra vez. Así rompes el "template de IA".</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-num">04</div>
+        <div class="rule-body">
+          <strong>Magenta y cyan solo en modo web.</strong>
+          <p>Si los metes en un post de IG rompes la calidez. Déjalos como territorio exclusivo del sitio y los videos técnicos.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-num">05</div>
+        <div class="rule-body">
+          <strong>Pasteles solo en modo social.</strong>
+          <p>El rosa suave y el amarillo pastel viven en tus carruseles. En el web se sentirían fuera de lugar.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-num">06</div>
+        <div class="rule-body">
+          <strong>Fondo crema dotted = territorio común.</strong>
+          <p>Es el único fondo que puedes usar en los dos mundos. En el web, úsalo en secciones donde muestres testimonios, posts embebidos o contenido cercano.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Paleta v1 · Ajustable según feedback
+  </footer>
+
+</div>
+</body>
+</html>

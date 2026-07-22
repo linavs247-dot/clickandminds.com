@@ -1,0 +1,28 @@
+---
+// The editorial "block + pin" highlight. Replaces the old flat .hl-lime
+// block, which had zero vertical padding and inherited the parent
+// heading's line-height, so it visually invaded the line above it. Here
+// the block is its own absolutely-positioned layer sized off .highlight's
+// own line-height:1 (see global.css), independent of the ancestor
+// heading's line box, and animates in via the shared [data-reveal]
+// IntersectionObserver set up once in Layout.astro.
+interface Props {
+  color?: "lime" | "lavender";
+  pin?: "top-right" | "bottom-left";
+  class?: string;
+}
+
+const { color = "lime", pin = "top-right", class: className = "" } = Astro.props;
+---
+
+<span
+  class={`highlight highlight-${color} ${className}`}
+  data-reveal
+>
+  <span class="highlight-block" aria-hidden="true"></span>
+  <span class={`highlight-pin pin-${pin}`} aria-hidden="true">
+    <span class="pin-line"></span>
+    <span class="pin-dot"></span>
+  </span>
+  <span class="highlight-text"><slot /></span>
+</span>

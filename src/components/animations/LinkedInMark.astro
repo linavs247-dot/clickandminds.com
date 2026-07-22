@@ -1,0 +1,43 @@
+---
+// A decorative floating "in" mark, stylized in the brand's own palette
+// (not LinkedIn's brand blue) rather than a literal logo reproduction,
+// so it reads as a tasteful nod to the platform instead of a trademark
+// lockup. Outlined, low opacity, floats like GlowOrb's gradient blobs.
+interface Props {
+  size?: number;
+  class?: string;
+  variant?: "outline" | "filled";
+  /** Mouse-parallax strength in px of max travel; omit for none. Shares
+   * the --px/--py custom properties the `float` keyframe reads (see
+   * GlowOrb.astro), since both components reuse that same keyframe. */
+  parallax?: number;
+}
+
+const { size = 56, class: className = "", variant = "outline", parallax } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 48 48"
+  width={size}
+  height={size}
+  data-parallax={parallax ?? undefined}
+  class={`pointer-events-none absolute animate-[float_9s_ease-in-out_infinite] opacity-[0.16] dark:opacity-[0.14] ${className}`}
+  aria-hidden="true"
+>
+  <rect
+    x="2"
+    y="2"
+    width="44"
+    height="44"
+    rx="11"
+    fill={variant === "filled" ? "currentColor" : "none"}
+    stroke="currentColor"
+    stroke-width="2"
+  />
+  <rect x="12" y="19" width="5" height="18" rx="1" fill="currentColor" />
+  <circle cx="14.5" cy="12.5" r="3" fill="currentColor" />
+  <path
+    d="M23 37 V19 h5 v2.6 c1.6-2 4-3 6.6-3 5 0 7.4 3.3 7.4 8.4 V37 h-5 V28 c0-2.8-.9-4.6-3.6-4.6 -2.4 0-3.9 1.6-4.4 3.2 -.2.5-.2 1.2-.2 1.9 V37 Z"
+    fill="currentColor"
+  />
+</svg>

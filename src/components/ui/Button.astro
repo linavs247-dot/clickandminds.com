@@ -1,0 +1,67 @@
+---
+interface Props {
+  href?: string;
+  variant?: "lime" | "solid" | "ghost";
+  size?: "md" | "lg";
+  external?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = "lime",
+  size = "md",
+  external = false,
+  class: className = "",
+} = Astro.props;
+
+const base =
+  "group relative inline-flex items-center justify-center gap-2 rounded-full font-display font-semibold " +
+  "transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] " +
+  "hover:-translate-y-0.5 active:translate-y-0 active:duration-75 overflow-hidden";
+
+const sizes = {
+  md: "px-6 py-3 text-sm",
+  lg: "px-8 py-4 text-base",
+};
+
+const variants = {
+  lime:
+    "bg-lime text-purple-primary shadow-[0_4px_0_rgba(42,23,85,0.4)] " +
+    "hover:shadow-[0_6px_20px_-2px_rgba(239,255,115,0.6)] " +
+    "dark:shadow-[0_0_25px_-2px_rgba(239,255,115,0.5)] dark:hover:shadow-[0_0_35px_-2px_rgba(239,255,115,0.75)]",
+  solid:
+    "bg-purple-primary text-white-soft shadow-[0_4px_0_var(--color-purple-deep)] " +
+    "dark:bg-neon-purple dark:shadow-[0_0_25px_-2px_rgba(143,92,255,0.6)] dark:hover:shadow-[0_0_35px_-2px_rgba(143,92,255,0.8)]",
+  ghost:
+    "bg-transparent text-[var(--fg)] border border-[var(--fg)]/40 " +
+    "hover:border-[var(--ghost-hover)] hover:bg-[var(--ghost-hover)]/10",
+};
+
+const classes = [base, sizes[size], variants[variant], className].join(" ");
+const externalProps = external ? { target: "_blank", rel: "noopener" } : {};
+---
+
+{
+  href ? (
+    <a href={href} class={classes} {...externalProps}>
+      <span
+        class="pointer-events-none absolute inset-0 -translate-x-full bg-white/25 skew-x-[-20deg] transition-transform duration-500 group-hover:translate-x-full"
+        aria-hidden="true"
+      />
+      <span class="relative z-10 inline-flex items-center gap-2">
+        <slot />
+      </span>
+    </a>
+  ) : (
+    <button type="button" class={classes}>
+      <span
+        class="pointer-events-none absolute inset-0 -translate-x-full bg-white/25 skew-x-[-20deg] transition-transform duration-500 group-hover:translate-x-full"
+        aria-hidden="true"
+      />
+      <span class="relative z-10 inline-flex items-center gap-2">
+        <slot />
+      </span>
+    </button>
+  )
+}

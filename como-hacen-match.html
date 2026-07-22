@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo hacen match tus dos mundos</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;700&display=swap');
+
+  :root {
+    --morado: #38206F;
+    --lavanda: #B9A8FF;
+    --lima: #EFFF73;
+    --blanco: #FAFAF8;
+    --papel: #F6F4EF;
+    --negro: #191919;
+    --dot: #D8D2C6;
+    --navy: #101426;
+    --dark2: #20113F;
+    --neon-purple: #8F5CFF;
+    --pink: #E04DFF;
+    --blue: #47C7FF;
+    --folder: #F9B8D4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #EFEBE1;
+    color: var(--morado);
+    line-height: 1.5;
+    padding: 20px 12px 60px;
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; }
+
+  /* HEADER */
+  .hero { text-align: center; margin-bottom: 32px; padding: 20px 8px; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--morado);
+    opacity: 0.6;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 7vw, 44px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--morado);
+    margin-bottom: 14px;
+  }
+  h1 .hl {
+    background: var(--lima);
+    padding: 0 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .lead {
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+    opacity: 0.8;
+  }
+
+  /* MOCKUP CONTAINER */
+  .mockups {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  @media (min-width: 700px) {
+    .mockups { grid-template-columns: 1fr 1fr; gap: 20px; }
+  }
+
+  .mock-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--morado);
+    opacity: 0.6;
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  /* POST MOCKUP */
+  .post {
+    aspect-ratio: 4/5;
+    background: var(--blanco);
+    background-image: radial-gradient(#C8C2B6 1.2px, transparent 1.2px);
+    background-size: 14px 14px;
+    border-radius: 18px;
+    padding: 22px 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .post-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 5.5vw, 38px);
+    line-height: 0.95;
+    color: var(--morado);
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+    margin-top: 40px;
+  }
+  .post-title .lav { color: var(--neon-purple); }
+  .post-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    color: var(--morado);
+    background: var(--lima);
+    display: inline-block;
+    padding: 4px 10px;
+    margin-top: 16px;
+    transform: rotate(-1deg);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* POST DECORATIONS */
+  .star {
+    position: absolute;
+    color: var(--morado);
+    font-family: sans-serif;
+  }
+  .dot-circle {
+    position: absolute;
+    background: #FCEA98;
+    border-radius: 50%;
+    border: 1.5px solid var(--morado);
+  }
+  .warn {
+    position: absolute;
+    width: 44px;
+    height: 40px;
+    top: 30px;
+    left: 12px;
+    z-index: 1;
+  }
+  .folder-tag {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 60px;
+    height: 44px;
+    background: var(--folder);
+    border-radius: 4px 8px 4px 4px;
+    box-shadow: 2px 3px 0 var(--lavanda);
+  }
+  .folder-tag::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 4px;
+    width: 22px;
+    height: 8px;
+    background: var(--folder);
+    border-radius: 4px 4px 0 0;
+  }
+  .doodle {
+    position: absolute;
+    top: 20px;
+    right: 78px;
+    width: 60px;
+    height: 30px;
+    z-index: 0;
+  }
+  .arrow3d {
+    position: absolute;
+    bottom: 90px;
+    right: 12px;
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, var(--lavanda), var(--neon-purple));
+    clip-path: polygon(0 40%, 60% 40%, 60% 20%, 100% 50%, 60% 80%, 60% 60%, 0 60%);
+    transform: rotate(-15deg);
+    box-shadow: 3px 3px 0 rgba(56, 32, 111, 0.15);
+  }
+
+  /* WEB MOCKUP */
+  .web {
+    aspect-ratio: 4/5;
+    background: linear-gradient(160deg, var(--navy) 0%, var(--dark2) 100%);
+    border-radius: 18px;
+    padding: 22px 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(16, 20, 38, 0.4);
+  }
+  .web::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(143, 92, 255, 0.18) 1px, transparent 1px);
+    background-size: 14px 14px;
+    opacity: 0.4;
+  }
+  .web-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 32px;
+  }
+  .web-logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: white;
+    letter-spacing: -0.01em;
+  }
+  .web-logo .dot { color: var(--pink); }
+  .web-menu {
+    display: flex;
+    gap: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+  }
+  .web-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 5.5vw, 36px);
+    line-height: 0.95;
+    color: white;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+    margin-top: 20px;
+  }
+  .web-title .neon {
+    background: linear-gradient(90deg, var(--pink), var(--neon-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .web-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    color: var(--navy);
+    background: var(--lima);
+    display: inline-block;
+    padding: 4px 10px;
+    margin-top: 14px;
+    transform: rotate(-1deg);
+    position: relative;
+    z-index: 2;
+  }
+  .web-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--neon-purple);
+    color: white;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    margin-top: 18px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 20px rgba(143, 92, 255, 0.5);
+  }
+  .glow-star {
+    position: absolute;
+    color: var(--pink);
+    font-size: 14px;
+    text-shadow: 0 0 8px currentColor;
+    z-index: 1;
+  }
+  .web-arrow {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, var(--neon-purple), var(--pink));
+    clip-path: polygon(0 40%, 60% 40%, 60% 20%, 100% 50%, 60% 80%, 60% 60%, 0 60%);
+    transform: rotate(-15deg);
+    box-shadow: 0 0 30px rgba(224, 77, 255, 0.5);
+    z-index: 2;
+  }
+  .web-doodle {
+    position: absolute;
+    top: 60px;
+    right: 14px;
+    width: 60px;
+    height: 30px;
+    z-index: 1;
+    opacity: 0.7;
+  }
+
+  /* BRIDGES SECTION */
+  .bridges-intro {
+    text-align: center;
+    margin: 48px 0 24px;
+  }
+  .bridges-intro h2 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: clamp(24px, 5vw, 34px);
+    line-height: 1;
+    color: var(--morado);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .bridges-intro p {
+    font-size: 14px;
+    opacity: 0.75;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .bridge {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+    align-items: start;
+    border: 1.5px solid rgba(56, 32, 111, 0.08);
+  }
+  .bridge-num {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    color: var(--lavanda);
+    line-height: 1;
+    -webkit-text-stroke: 1.5px var(--morado);
+    text-stroke: 1.5px var(--morado);
+  }
+  .bridge h3 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--morado);
+    margin-bottom: 6px;
+  }
+  .bridge p {
+    font-size: 13.5px;
+    color: var(--morado);
+    opacity: 0.75;
+    margin-bottom: 12px;
+  }
+  .example-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .example {
+    padding: 14px 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .example.light {
+    background: var(--papel);
+    background-image: radial-gradient(#C8C2B6 1px, transparent 1px);
+    background-size: 10px 10px;
+    color: var(--morado);
+  }
+  .example.dark {
+    background: var(--navy);
+    color: white;
+  }
+  .example-tag {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+  .example.light .example-tag { color: var(--morado); }
+  .example.dark .example-tag { color: white; }
+
+  .example .hl-lime {
+    background: var(--lima);
+    color: var(--morado);
+    padding: 1px 6px;
+    -webkit-text-fill-color: var(--morado);
+  }
+  .example.dark .neon-txt {
+    background: linear-gradient(90deg, var(--pink), var(--neon-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* CLOSING */
+  .closing {
+    margin-top: 40px;
+    padding: 32px 24px;
+    background: linear-gradient(135deg, var(--morado) 0%, var(--dark2) 100%);
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+  }
+  .closing h2 {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: clamp(22px, 5vw, 30px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .closing h2 .hl {
+    background: var(--lima);
+    color: var(--morado);
+    padding: 0 6px;
+  }
+  .closing p {
+    font-size: 14px;
+    opacity: 0.85;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Cómo hacen match tus dos mundos</div>
+    <h1>Cambia el modo,<br><span class="hl">no el ADN.</span></h1>
+    <p class="lead">Un post claro y una sección oscura del web pueden verse muy distintos pero sentirse la misma marca. Mira cómo.</p>
+  </div>
+
+  <!-- MOCKUPS -->
+  <div class="mockups">
+    <div>
+      <div class="mock-label">◐ Modo día — Post IG/LinkedIn</div>
+      <div class="post">
+        <div class="warn">
+          <svg viewBox="0 0 44 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 4 L42 36 L2 36 Z" fill="none" stroke="#FCEA98" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M22 8 L38 34 L6 34 Z" fill="#FCEA98"/>
+            <path d="M22 15 L22 25" stroke="#E04DFF" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="22" cy="29" r="1.8" fill="#E04DFF"/>
+          </svg>
+        </div>
+        <div class="folder-tag"></div>
+        <svg class="doodle" viewBox="0 0 60 30">
+          <path d="M2 15 Q 15 2, 25 15 T 55 15" fill="none" stroke="#B9A8FF" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div class="star" style="top: 100px; left: 20px; font-size: 22px;">✦</div>
+        <div class="dot-circle" style="width: 14px; height: 14px; top: 130px; left: 60px;"></div>
+        <div class="star" style="bottom: 30px; right: 70px; font-size: 18px; color: #FCEA98;">★</div>
+
+        <div class="post-title">Automatiza <span class="lav">tu</span><br>contenido<br>con IA</div>
+        <div class="post-sub">sin morir en el intento</div>
+
+        <div class="arrow3d"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="mock-label">◑ Modo noche — Website hero</div>
+      <div class="web">
+        <div class="web-nav">
+          <div class="web-logo">tu<span class="dot">.</span>marca</div>
+          <div class="web-menu"><span>Servicios</span><span>Sobre mí</span></div>
+        </div>
+
+        <div class="glow-star" style="top: 90px; right: 30px;">✦</div>
+        <div class="glow-star" style="top: 130px; right: 80px; font-size: 10px;">✦</div>
+        <div class="glow-star" style="bottom: 80px; left: 20px; color: #47C7FF;">✦</div>
+
+        <svg class="web-doodle" viewBox="0 0 60 30">
+          <path d="M2 15 Q 15 2, 25 15 T 55 15" fill="none" stroke="#8F5CFF" stroke-width="2.5" stroke-linecap="round" style="filter: drop-shadow(0 0 4px #8F5CFF);"/>
+        </svg>
+
+        <div class="web-title">Automatiza.<br><span class="neon">Crea. Escala.</span></div>
+        <div class="web-sub">IA que trabaja contigo</div>
+        <div class="web-btn">Explorar servicios →</div>
+
+        <div class="web-arrow"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRIDGES -->
+  <div class="bridges-intro">
+    <h2>Los 5 puentes</h2>
+    <p>Estos elementos aparecen en ambos mundos. Son los que hacen que se sientan familia.</p>
+  </div>
+
+  <div class="bridge">
+    <div class="bridge-num">01</div>
+    <div>
+      <h3>La misma tipografía</h3>
+      <p>Sora Bold para titulares en los dos mundos. Cambia el color de fondo, pero la letra es idéntica.</p>
+      <div class="example-pair">
+        <div class="example light">
+          <span class="example-tag">Post</span>
+          Delete cowokers
+        </div>
+        <div class="example dark">
+          <span class="example-tag">Web</span>
+          Delete cowokers
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bridge">
+    <div class="bridge-num">02</div>
+    <div>
+      <h3>El morado #38206F cambia de rol</h3>
+      <p>En modo día es <em>tinta</em> (color de las letras). En modo noche es <em>lienzo</em> (color de fondo). Mismo pigmento, distinta función.</p>
+      <div class="example-pair">
+        <div class="example light" style="color: #38206F;">
+          <span class="example-tag">Tinta</span>
+          Título aquí
+        </div>
+        <div class="example" style="background: #38206F; color: white;">
+          <span class="example-tag" style="color: white;">Lienzo</span>
+          Título aquí
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bridge">
+    <div class="bridge-num">03</div>
+    <div>
+      <h3>El highlight lima es tu firma cruzada</h3>
+      <p>Este es el elemento MÁS importante para hacer match. El amarillo #EFFF73 aparece en ambos mundos con la misma función: subrayar lo clave. Sin él, se romperían.</p>
+      <div class="example-pair">
+        <div class="example light">
+          <span class="example-tag">Post</span>
+          <span>Ideas que <span class="hl-lime">conectan</span></span>
+        </div>
+        <div class="example dark">
+          <span class="example-tag">Web</span>
+          <span>Ideas que <span class="hl-lime">conectan</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bridge">
+    <div class="bridge-num">04</div>
+    <div>
+      <h3>Los mismos elementos gráficos, otra luz</h3>
+      <p>Flechas 3D, estrellitas, líneas doodle, folders. En el post son planos y pasteles. En el web brillan con neón. Es la misma flecha, con otro traje.</p>
+      <div class="example-pair">
+        <div class="example light" style="min-height: 80px;">
+          <span class="example-tag">Plano</span>
+          <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #B9A8FF, #8F5CFF); clip-path: polygon(0 40%, 60% 40%, 60% 20%, 100% 50%, 60% 80%, 60% 60%, 0 60%); transform: rotate(-15deg);"></div>
+        </div>
+        <div class="example dark" style="min-height: 80px;">
+          <span class="example-tag" style="color: white;">Con glow</span>
+          <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8F5CFF, #E04DFF); clip-path: polygon(0 40%, 60% 40%, 60% 20%, 100% 50%, 60% 80%, 60% 60%, 0 60%); transform: rotate(-15deg); filter: drop-shadow(0 0 12px rgba(224, 77, 255, 0.7));"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bridge">
+    <div class="bridge-num">05</div>
+    <div>
+      <h3>La textura de puntos vive en los dos</h3>
+      <p>El fondo dotted del post no desaparece en el web — se queda como capa sutil sobre el navy. Es un detalle chiquito que amarra todo.</p>
+      <div class="example-pair">
+        <div class="example light" style="min-height: 60px;">
+          <span class="example-tag">100% visible</span>
+        </div>
+        <div class="example" style="background: #101426; background-image: radial-gradient(rgba(143, 92, 255, 0.25) 1px, transparent 1px); background-size: 10px 10px; min-height: 60px;">
+          <span class="example-tag" style="color: white;">Sutil, con glow</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <h2>La regla de oro:<br><span class="hl">cambia 1, deja 4.</span></h2>
+    <p>Si estás en modo noche, deja el fondo cambiar. Pero mantén tipografía, morado, lima, elementos y puntos. Así siempre se sentirá tu marca.</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "@fontsource/sora/600.css";
+import "@fontsource/sora/700.css";
+import "@fontsource/sora/800.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource/caveat/600.css";
+import "@fontsource/caveat/700.css";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Path under /public for the social share image, 1200x630. */
+  image?: string;
+  /** Set true for internal-only pages (e.g. /styleguide) that shouldn't
+   * be indexed even if linked to from outside the site. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "Click & Minds designs custom AI employees and done for you LinkedIn content systems for founders, creators, and business owners.",
+  image = "/brand/og-image.png",
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = new URL(image, Astro.site);
+const pageTitle = `${title} · Click & Minds`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <title>{pageTitle}</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content="Click & Minds" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+
+    <ClientRouter />
+
+    <script is:inline>
+      // Applied before paint to avoid a flash of the wrong theme.
+      // Persisted via a cookie (not localStorage) per brand spec.
+      //
+      // Also re-applied on `astro:after-swap`: the View Transitions router
+      // fetches the destination page's raw HTML (scripts never execute in
+      // that offscreen parse) and syncs the live <html> element's
+      // attributes to match it, which wipes data-theme back to unset right
+      // before the swapped content paints. Re-running this function on
+      // that event (registered once here, since this script itself only
+      // runs once per full load) restores it in time to avoid a flash.
+      (function () {
+        function applyTheme() {
+          var match = document.cookie.match(/(?:^|; )theme=(dark|light)/);
+          var theme = match ? match[1] : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+        applyTheme();
+        document.addEventListener("astro:after-swap", applyTheme);
+      })();
+    </script>
+  </head>
+  <body class="font-body">
+    <slot />
+  </body>
+
+  <script>
+    // Single shared IntersectionObserver driving every Highlight and
+    // Headline reveal on the page (both mark themselves with
+    // data-reveal). Deliberately not a per-instance React island: these
+    // are pure CSS transitions (see .highlight-block/.highlight-pin/
+    // .headline-word in global.css), one shared observer is far cheaper
+    // than hydrating a component per heading. prefers-reduced-motion is
+    // already handled globally (transition-duration forced to ~0 in
+    // global.css), so this script doesn't need its own reduced-motion
+    // branch, it just needs to add the class.
+    // Re-runs on `astro:page-load`, which fires after the initial load AND
+    // after every view transition swap, so reveal targets on whichever page
+    // just became visible always get a fresh observer (the previous page's
+    // observer instance is garbage collected with its now-detached nodes).
+    document.addEventListener("astro:page-load", () => {
+      const revealTargets = document.querySelectorAll("[data-reveal]");
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.4 }
+      );
+      revealTargets.forEach((el) => revealObserver.observe(el));
+    });
+  </script>
+</html>

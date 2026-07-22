@@ -1,0 +1,28 @@
+---
+import Section from "../layout/Section.astro";
+import Headline from "../ui/Headline.astro";
+import Highlight from "../ui/Highlight.astro";
+import GlowOrb from "../animations/GlowOrb.astro";
+import LinkedInMark from "../animations/LinkedInMark.astro";
+---
+
+<Section tone="contrast" class="text-center">
+  <GlowOrb color="pink" size={480} class="-top-24 left-1/4" />
+  <GlowOrb color="blue" size={380} class="bottom-0 right-10" />
+  <LinkedInMark size={42} class="left-[8%] bottom-10 text-[var(--fg)] [animation-delay:1s]" />
+  <LinkedInMark size={54} class="right-[6%] top-10 text-[var(--fg)] [animation-delay:2.5s]" />
+
+  <div class="mx-auto max-w-2xl">
+    <p class="font-display text-2xl font-bold text-[var(--fg)]/80 sm:text-3xl">
+      Don't just build an audience.
+    </p>
+    <Headline as="h2" lead="" class="mt-2 text-3xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-4xl">
+      <Highlight pin="bottom-left">Build an email list you actually own.</Highlight>
+    </Headline>
+    <p class="mx-auto mt-6 max-w-lg text-base leading-relaxed text-[var(--fg)]/70 sm:text-lg">
+      Social media platforms change. Algorithms change. Your email list is one of the few
+      marketing assets that truly belongs to you. That is why we do not just create
+      content. We help you build a complete authority and lead generation system.
+    </p>
+  </div>
+</Section>

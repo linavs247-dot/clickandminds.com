@@ -1,0 +1,345 @@
+@import "tailwindcss";
+
+/* Dark mode is driven by a data-theme attribute on <html>, toggled via ThemeToggle.
+   Not tied to prefers-color-scheme: the visitor controls it explicitly. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* ---- Brand palette (official, see PLAN_CLICK_AND_MINDS.md) ---- */
+  --color-purple-primary: #38206F;
+  --color-purple-deep: #2A1755;
+  --color-lavender: #B9A8FF;
+  --color-lavender-soft: #DDD3FF;
+  --color-lime: #EFFF73;
+  --color-white-soft: #FAFAF8;
+  --color-paper-dotted: #F6F4EF;
+  --color-dot: #D8D2C6;
+  --color-navy-dark: #101426;
+  --color-dark-gradient: #20113F;
+  --color-dark-deep: #180D2F;
+  --color-neon-purple: #8F5CFF;
+  --color-electric-pink: #E04DFF;
+  --color-neon-blue: #47C7FF;
+  --color-folder-pink: #F9B8D4;
+  --color-butter-yellow: #FCEA98;
+
+  /* ---- Type ---- */
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-hand: "Caveat", cursive;
+
+  /* ---- Motion ---- */
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+ * Theme-aware color tokens, resolved via CSS custom properties, driven
+ * SOLELY by the global day/night toggle (data-theme on <html>, set by
+ * ThemeToggle.tsx and bootstrapped before paint in Layout.astro). Every
+ * section reads these same tokens, there is no per-section override
+ * layer any more (Section.astro used to stamp its own local data-theme
+ * per fixed "tone", intentionally independent of the toggle; the toggle
+ * now drives the whole site instead, see memory project-global-toggle-
+ * everything). Custom properties inherit normally, so :root's light
+ * values are the default and [data-theme="dark"] overrides them
+ * site-wide the moment the toggle flips.
+ */
+@layer base {
+  :root,
+  [data-theme="light"] {
+    --fg: var(--color-purple-primary);
+    --fg-muted: color-mix(in srgb, var(--color-purple-primary) 70%, transparent);
+    --eyebrow-fg: color-mix(in srgb, var(--color-purple-primary) 70%, transparent);
+    --ghost-hover: var(--color-purple-primary);
+    --card-bg: var(--color-white-soft);
+    --card-border: color-mix(in srgb, var(--color-purple-primary) 12%, transparent);
+    --divider: color-mix(in srgb, var(--color-purple-primary) 10%, transparent);
+    --pin-color: var(--color-purple-primary);
+    --headline-fill: linear-gradient(180deg, var(--color-purple-primary), var(--color-purple-primary));
+    --headline-shadow: 0 2px 18px rgba(56, 32, 111, 0.18);
+    --headline-glow-opacity: 0;
+
+    /* Section tone="feature" background: a soft, bright gradient band
+       for emphasis in day mode (hero, gallery, pricing, dramatic CTAs). */
+    --feature-bg-from: var(--color-lavender-soft);
+    --feature-bg-to: var(--color-white-soft);
+    --feature-dot: var(--color-dot);
+
+    /* GlowOrb colors: softer, pastel versions in day mode so the neon
+       palette doesn't clash with the cream background. */
+    --glow-purple: rgba(184, 168, 255, 0.35);
+    --glow-pink: rgba(233, 168, 255, 0.28);
+    --glow-blue: rgba(150, 210, 255, 0.22);
+    --glow-lime: rgba(210, 230, 90, 0.28);
+  }
+
+  [data-theme="dark"] {
+    --fg: var(--color-white-soft);
+    --fg-muted: color-mix(in srgb, var(--color-white-soft) 70%, transparent);
+    --eyebrow-fg: var(--color-lime);
+    --ghost-hover: var(--color-lime);
+    --card-bg: color-mix(in srgb, white 6%, transparent);
+    --card-border: color-mix(in srgb, var(--color-neon-purple) 25%, transparent);
+    --divider: color-mix(in srgb, white 10%, transparent);
+    --pin-color: var(--color-lime);
+    --headline-fill: linear-gradient(180deg, var(--color-white-soft) 0%, var(--color-lavender) 100%);
+    --headline-shadow: none;
+    --headline-glow-opacity: 1;
+
+    --feature-bg-from: var(--color-navy-dark);
+    --feature-bg-to: var(--color-dark-gradient);
+    --feature-dot: rgba(143, 92, 255, 0.18);
+
+    --glow-purple: rgba(143, 92, 255, 0.35);
+    --glow-pink: rgba(224, 77, 255, 0.3);
+    --glow-blue: rgba(71, 199, 255, 0.25);
+    --glow-lime: rgba(239, 255, 115, 0.2);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-body);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper-dotted);
+    color: var(--color-purple-primary);
+    background-image: radial-gradient(var(--color-dot) 1.2px, transparent 1.2px);
+    background-size: 20px 20px;
+    transition: background-color 0.3s var(--ease-snap), color 0.3s var(--ease-snap);
+  }
+
+  [data-theme="dark"] body {
+    background-color: var(--color-navy-dark);
+    color: var(--color-white-soft);
+    background-image: radial-gradient(rgba(143, 92, 255, 0.18) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  ::selection {
+    background-color: var(--color-lime);
+    color: var(--color-purple-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-neon-purple);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Hand-highlighted word, Caveat script over a lime marker.
+     Use on a single <span class="hl-hand"> word inside a heading. */
+  .hl-hand {
+    font-family: var(--font-hand);
+    position: relative;
+    white-space: nowrap;
+  }
+
+  /* Flat lime highlight block behind a word (the brand "signature"). */
+  .hl-lime {
+    background: var(--color-lime);
+    color: var(--color-purple-primary);
+    padding: 0 0.2em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* Neon gradient text, dark mode only accent. */
+  .hl-neon {
+    background: linear-gradient(90deg, var(--color-electric-pink), var(--color-neon-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /*
+   * Highlight: the "block + pin" editorial highlight (see Highlight.astro).
+   *
+   * The block used to be a separate absolutely-positioned layer sized off
+   * .highlight's own box. That broke on any highlighted phrase long enough
+   * to wrap across a line (e.g. "Build an email list you actually own."):
+   * an absolutely-positioned child only covers ONE box, but wrapped inline
+   * content generates one box PER LINE, so the block only covered the
+   * first fragment and the rest of the phrase rendered off the lime block
+   * entirely (purple text on the plain background, unreadable).
+   *
+   * Fixed by putting the background directly on .highlight-text itself as
+   * a `background-size` reveal (0% to 100% width, not scaleX, so the text
+   * glyphs never get stretched) combined with `box-decoration-break:
+   * clone`, which is exactly the CSS mechanism designed for "a background
+   * that must render correctly per wrapped line": each line fragment gets
+   * its own cloned background box automatically. No absolutely-positioned
+   * block element needed at all any more.
+   */
+  .highlight {
+    position: relative;
+  }
+
+  .highlight-text {
+    position: relative;
+    display: inline;
+    line-height: 1.3;
+    padding: 0.05em 0.15em;
+    color: var(--color-purple-primary);
+    /* -webkit-text-fill-color inherits in WebKit/Chrome and wins over
+       `color` when both are set. .headline-text sets it to transparent
+       for the gradient-clip effect; without resetting it here too, this
+       span would inherit that transparent fill and render invisible even
+       though its own `color` is correctly purple. */
+    -webkit-text-fill-color: var(--color-purple-primary);
+    background-image: linear-gradient(var(--color-lime), var(--color-lime));
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    background-position: left center;
+    transition: background-size 0.5s ease-out;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .highlight.in-view .highlight-text {
+    background-size: 100% 100%;
+  }
+
+  .highlight-lavender .highlight-text {
+    /* Not `inherit`: that would chain through .highlight's own inherited
+       value from .headline-text, which is transparent (the gradient-clip
+       fill), making this invisible too. Reference --fg directly instead,
+       the always-visible current text color regardless of ancestor. */
+    color: var(--fg);
+    -webkit-text-fill-color: var(--fg);
+    background-image: linear-gradient(
+      color-mix(in srgb, var(--color-lavender) 30%, transparent),
+      color-mix(in srgb, var(--color-lavender) 30%, transparent)
+    );
+  }
+
+  .highlight-pin {
+    position: absolute;
+    width: 2px;
+    height: 24px;
+    opacity: 0;
+    transition: opacity 0.3s ease-out 0.45s;
+  }
+
+  .highlight.in-view .highlight-pin {
+    opacity: 1;
+  }
+
+  .pin-top-right {
+    top: -24px;
+    right: -6px;
+  }
+
+  .pin-bottom-left {
+    bottom: -24px;
+    left: -6px;
+  }
+
+  .highlight-pin .pin-line {
+    position: absolute;
+    inset: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: var(--pin-color);
+  }
+
+  .highlight-pin .pin-dot {
+    position: absolute;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--pin-color);
+    transform: translateX(-50%) scale(0.5);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.45s;
+  }
+
+  .highlight.in-view .highlight-pin .pin-dot {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .pin-top-right .pin-dot {
+    top: -3px;
+  }
+
+  .pin-bottom-left .pin-dot {
+    bottom: -3px;
+  }
+
+  /*
+   * Headline: tone-aware heading text treatment (see Headline.astro).
+   * Uses the same nearest-wins custom property technique as --fg (never
+   * `[data-theme="dark"] .headline-text`, that reintroduces the "any dark
+   * ancestor" bug documented in memory project-theme-architecture-fix).
+   * --headline-fill is a flat repeated-color gradient in light mode so the
+   * same background-clip mechanism works in both modes without branching.
+   */
+  .headline-text {
+    position: relative;
+    background-image: var(--headline-fill);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-shadow: var(--headline-shadow);
+  }
+
+  .headline-glow {
+    position: absolute;
+    inset: -20% -10%;
+    z-index: -1;
+    border-radius: 999px;
+    filter: blur(40px);
+    background: radial-gradient(ellipse at center, rgba(143, 92, 255, 0.2) 0%, transparent 70%);
+    opacity: var(--headline-glow-opacity);
+  }
+
+  .headline-word {
+    /* background-image/background-clip never inherit through the DOM by
+       default (only `color` does), so without repeating them here each
+       word span would inherit .headline-text's `color: transparent` but
+       not the gradient meant to fill it, rendering as genuinely invisible
+       text. Referencing --headline-fill directly (rather than `inherit`,
+       which only pulls from the *direct* parent span, not the h1 two
+       levels up) works at any nesting depth, since custom properties
+       cascade through every intermediate element automatically. */
+    /* margin-right, not a literal space character, creates the gap
+       between words: a trailing space placed *inside* an inline-block
+       span gets trimmed against that box's own edge in some engines
+       (confirmed in Chrome here), which rendered "Hire AI" as "HireAI". */
+    display: inline-block;
+    margin-right: 0.25em;
+    background-image: var(--headline-fill);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s var(--ease-snap), transform 0.5s var(--ease-snap);
+  }
+
+  [data-reveal].in-view .headline-word {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

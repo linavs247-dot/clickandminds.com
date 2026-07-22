@@ -1,0 +1,40 @@
+---
+// A section wrapper, toggle-aware: every section follows the global
+// day/night theme (see global.css's --fg/--card-bg/etc. custom
+// properties, driven solely by data-theme on <html>). There is no
+// per-section fixed tone any more, "tone" now only chooses between two
+// BACKGROUND TREATMENTS that each adapt to the current toggle state:
+//   - "paper": plain, blends with the page's own background (cream
+//     dotted in day mode, navy dotted in night mode).
+//   - "feature" (also accepts the old "night"/"contrast" values so
+//     existing call sites don't need updating): a brighter gradient
+//     band for emphasis (hero, gallery, pricing, dramatic CTAs), still
+//     toggle-aware, just a different day-mode look (soft lavender
+//     gradient) and night-mode look (navy to dark-purple gradient with
+//     glow) than "paper".
+interface Props {
+  tone?: "paper" | "feature" | "night" | "contrast";
+  class?: string;
+  id?: string;
+}
+
+const { tone = "paper", class: className = "", id } = Astro.props;
+const isFeature = tone !== "paper";
+
+const baseClasses = isFeature
+  ? "bg-gradient-to-br from-[var(--feature-bg-from)] to-[var(--feature-bg-to)] text-[var(--fg)]"
+  : "bg-paper-dotted text-[var(--fg)] dark:bg-navy-dark";
+
+const dotClasses =
+  "[background-image:radial-gradient(var(--feature-dot)_1.2px,transparent_1.2px)] [background-size:20px_20px]";
+---
+
+<section
+  id={id}
+  class={`relative overflow-hidden py-20 sm:py-28 ${baseClasses} ${className}`}
+>
+  <div class={`pointer-events-none absolute inset-0 ${dotClasses}`} aria-hidden="true"></div>
+  <div class="relative z-10 mx-auto max-w-6xl px-6">
+    <slot />
+  </div>
+</section>

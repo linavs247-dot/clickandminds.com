@@ -1,0 +1,23 @@
+---
+import Section from "../layout/Section.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+import Button from "../ui/Button.astro";
+import GlowOrb from "../animations/GlowOrb.astro";
+import { GOOGLE_FORM_URL } from "../../lib/constants";
+---
+
+<Section tone="contrast" class="text-center">
+  <GlowOrb color="pink" size={520} class="left-1/2 top-0 -translate-x-1/2" />
+
+  <div class="relative mx-auto max-w-xl">
+    <Eyebrow class="justify-center text-lime">Limited client spots</Eyebrow>
+    <p class="mt-6 text-lg leading-relaxed text-[var(--fg)]/85">
+      We don't build hundreds of generic automations. Every AI employee is carefully
+      designed around your business. We only accept a limited number of new clients each
+      month. When our calendar is full, applications close.
+    </p>
+    <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="mt-8">
+      Apply to Work With Us
+    </Button>
+  </div>
+</Section>

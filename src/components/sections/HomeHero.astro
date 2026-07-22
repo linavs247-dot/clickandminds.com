@@ -1,0 +1,84 @@
+---
+import Section from "../layout/Section.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+import Headline from "../ui/Headline.astro";
+import Highlight from "../ui/Highlight.astro";
+import Button from "../ui/Button.astro";
+import GlowOrb from "../animations/GlowOrb.astro";
+import VideoFrame from "../layout/VideoFrame.astro";
+import { GOOGLE_FORM_URL } from "../../lib/constants";
+---
+
+<Section id="home-hero" tone="night" class="pt-32 sm:pt-40">
+  <GlowOrb color="purple" size={560} class="-top-40 -left-32" parallax={18} />
+  <GlowOrb color="pink" size={420} class="top-20 right-0" parallax={28} />
+  <GlowOrb color="blue" size={360} class="bottom-0 left-1/3" parallax={14} />
+
+  <div class="grid items-center gap-14 lg:grid-cols-2">
+    <div>
+      <Eyebrow>AI Agents &amp; Automation for Business Owners</Eyebrow>
+      <Headline as="h1" lead="Hire AI" class="mt-5 text-5xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-6xl lg:text-7xl">
+        <Highlight pin="top-right">employees.</Highlight>
+      </Headline>
+      <p class="mt-6 max-w-lg text-lg leading-relaxed text-[var(--fg-muted)]">
+        Stop hiring for repetitive work. Start building a business that runs itself. We
+        design custom AI agents that research, write, organize, sell, and support your
+        business twenty four hours a day. Built for creators, founders, freelancers, and
+        business owners.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg">
+          Book a Strategy Call
+        </Button>
+        <Button href="#ai-employee-gallery" variant="ghost" size="lg">
+          See What We Build
+        </Button>
+      </div>
+    </div>
+
+    <VideoFrame src="/videos/video-1-demo.mp4" class="w-full" />
+  </div>
+</Section>
+
+<script>
+  // Subtle mouse parallax on the hero's floating gradient orbs (each
+  // GlowOrb opts in via a `data-parallax` strength in px). Runs on
+  // `astro:page-load` for view-transition safety; disabled entirely under
+  // prefers-reduced-motion rather than just skipping the CSS transition,
+  // since this is a JS-driven transform, not a CSS animation.
+  document.addEventListener("astro:page-load", () => {
+    const hero = document.getElementById("home-hero");
+    if (!hero) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const orbs = Array.from(
+      hero.querySelectorAll<HTMLElement>("[data-parallax]")
+    );
+    if (orbs.length === 0) return;
+
+    let rafId = 0;
+    function handleMove(event: MouseEvent) {
+      const rect = hero!.getBoundingClientRect();
+      const nx = (event.clientX - rect.left) / rect.width - 0.5;
+      const ny = (event.clientY - rect.top) / rect.height - 0.5;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        for (const orb of orbs) {
+          const strength = Number(orb.dataset.parallax) || 0;
+          orb.style.setProperty("--px", `${nx * strength}px`);
+          orb.style.setProperty("--py", `${ny * strength}px`);
+        }
+      });
+    }
+    function handleLeave() {
+      cancelAnimationFrame(rafId);
+      for (const orb of orbs) {
+        orb.style.removeProperty("--px");
+        orb.style.removeProperty("--py");
+      }
+    }
+
+    hero.addEventListener("mousemove", handleMove);
+    hero.addEventListener("mouseleave", handleLeave);
+  });
+</script>

@@ -1,0 +1,56 @@
+---
+// A soft floating gradient blob, the "alive background" accent used in
+// both day and night mode. Colors come from the toggle-aware --glow-*
+// custom properties in global.css (softer pastels in day mode, the full
+// neon palette in night mode), not hardcoded rgba, so every orb adapts
+// automatically when the visitor flips the theme. Purely decorative:
+// aria-hidden, and the float keyframe is disabled globally under
+// prefers-reduced-motion (see global.css).
+interface Props {
+  color?: "purple" | "pink" | "blue" | "lime";
+  size?: number;
+  class?: string;
+  /** Mouse-parallax strength in px of max travel; omit for none (see the
+   * hero's own script, which looks for this attribute). */
+  parallax?: number;
+}
+
+const { color = "purple", size = 420, class: className = "", parallax } = Astro.props;
+
+const colorVar = {
+  purple: "var(--glow-purple)",
+  pink: "var(--glow-pink)",
+  blue: "var(--glow-blue)",
+  lime: "var(--glow-lime)",
+};
+---
+
+<div
+  aria-hidden="true"
+  data-parallax={parallax ?? undefined}
+  class={`pointer-events-none absolute rounded-full blur-3xl animate-[float_8s_ease-in-out_infinite] ${className}`}
+  style={`width:${size}px; height:${size}px; background: radial-gradient(circle, ${colorVar[color]} 0%, transparent 70%);`}
+>
+</div>
+
+<style>
+  /*
+   * translate(var(--px), var(--py)) composes with the float keyframe's own
+   * translateY/scale rather than fighting it: a hero's mouse-parallax
+   * script (see HomeHero.astro) only ever writes the --px/--py custom
+   * properties, never `transform` directly, since a directly-set inline
+   * transform would be overridden every frame by this very animation
+   * (CSS animations win the cascade over inline styles for the properties
+   * they animate). Custom properties aren't animated here, so JS writes to
+   * them take effect immediately, mid-animation, on the next paint.
+   */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate(var(--px, 0px), var(--py, 0px)) translateY(0) scale(1);
+    }
+    50% {
+      transform: translate(var(--px, 0px), var(--py, 0px)) translateY(-24px) scale(1.05);
+    }
+  }
+</style>

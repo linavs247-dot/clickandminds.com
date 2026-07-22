@@ -1,0 +1,33 @@
+---
+// Tone-aware heading text treatment: gradient + soft glow behind it in
+// dark sections, solid color + soft shadow in light sections (resolved via
+// the --headline-fill/--headline-shadow/--headline-glow-opacity custom
+// properties in global.css, using the same nearest-wins mechanism as --fg
+// so this is correct however this section is nested relative to the
+// visitor's day/night toggle). The lead-in words stagger fade+rise in on
+// scroll via the shared [data-reveal] observer in Layout.astro. The
+// highlighted phrase after `lead` (typically a <Highlight>) sets its own
+// explicit color, so it renders normally on top of the gradient clip.
+interface Props {
+  as?: "h1" | "h2" | "h3";
+  lead: string;
+  class?: string;
+}
+
+const { as: Tag = "h2", lead, class: className = "" } = Astro.props;
+const words = lead.trim().length > 0 ? lead.trim().split(" ") : [];
+---
+
+<Tag class={`headline-text relative ${className}`}>
+  <span class="headline-glow" aria-hidden="true"></span>
+  {words.length > 0 && (
+    <span data-reveal>
+      {words.map((word, i) => (
+        <span class="headline-word" style={`transition-delay:${i * 70}ms`}>
+          {word}
+        </span>
+      ))}
+    </span>
+  )}
+  <slot />
+</Tag>

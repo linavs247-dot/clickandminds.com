@@ -1,0 +1,78 @@
+---
+import Section from "../layout/Section.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Highlight from "../ui/Highlight.astro";
+
+const faqs = [
+  {
+    q: "Do I have to record videos?",
+    a: "Only if you choose a plan with video edits, or want to add the upgrade. Otherwise, we design posts and carousels for you. No camera required.",
+  },
+  {
+    q: "How long until I see results?",
+    a: "Clients often see engagement and inquiries within the first four to eight weeks, because you show up consistently with a strategy, not random posts.",
+  },
+  {
+    q: "Do I review posts before they go out?",
+    a: "Yes. Every post, carousel, and infographic is approved by you before it publishes. Nothing goes live without your sign off.",
+  },
+  {
+    q: "Can I change plans or cancel?",
+    a: "Yes. You can move between plans or cancel with 30 days notice. There are no long term contracts.",
+  },
+  {
+    q: "What if I later want to automate this?",
+    a: "That is exactly what our AI Systems are for. Once your content engine is running, we can build the automation layer on top of it.",
+  },
+];
+---
+
+<Section tone="paper">
+  <SectionHeading eyebrow="Questions" headingLead="Everything you">
+    <Highlight pin="bottom-left">want to know.</Highlight>
+  </SectionHeading>
+
+  <div class="linkedin-faq mt-10 max-w-2xl space-y-3">
+    {faqs.map((faq) => (
+      <div class="faq-item overflow-hidden rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)]">
+        <button
+          type="button"
+          class="faq-question flex w-full items-center justify-between gap-4 px-6 py-4 text-left font-display text-base font-bold text-[var(--fg)]"
+        >
+          {faq.q}
+          <span class="faq-icon shrink-0 font-mono text-xl font-normal text-neon-purple transition-transform duration-300">
+            +
+          </span>
+        </button>
+        <div class="faq-answer overflow-hidden transition-[max-height] duration-300" style="max-height: 0px;">
+          <p class="px-6 pb-4 text-sm leading-relaxed text-[var(--fg)]/70">
+            {faq.a}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</Section>
+
+<script>
+  // max-height driven by the answer's own measured scrollHeight, not the
+  // grid-template-rows 0fr/1fr trick: that trick stalled at 0px here,
+  // seemingly an interaction with the .faq-item ancestor's overflow:hidden
+  // affecting the grid row's auto-sizing (it worked fine for AgentCard's
+  // hover reveal, which has no such ancestor). max-height + scrollHeight
+  // is the long-established, more universally reliable accordion pattern.
+  // Re-binds on `astro:page-load` so this fires again if the visitor lands
+  // here via a client-side view transition, not just a hard page load.
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll(".linkedin-faq .faq-item").forEach((item) => {
+      const button = item.querySelector(".faq-question");
+      const answer = item.querySelector<HTMLElement>(".faq-answer");
+      const icon = item.querySelector<HTMLElement>(".faq-icon");
+      button?.addEventListener("click", () => {
+        const isOpen = item.classList.toggle("open");
+        if (answer) answer.style.maxHeight = isOpen ? `${answer.scrollHeight}px` : "0px";
+        if (icon) icon.style.transform = isOpen ? "rotate(45deg)" : "rotate(0deg)";
+      });
+    });
+  });
+</script>

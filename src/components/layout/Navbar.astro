@@ -1,0 +1,79 @@
+---
+import ThemeToggle from "../ui/ThemeToggle.tsx";
+import Button from "../ui/Button.astro";
+import { GOOGLE_FORM_URL } from "../../lib/constants";
+
+interface Props {
+  active?: "home" | "linkedin";
+}
+
+const { active = "home" } = Astro.props;
+---
+
+<header id="site-nav" class="fixed inset-x-0 top-0 z-50">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+    <a href="/" class="font-display text-lg font-extrabold tracking-tight" style="color: var(--fg)">
+      Click &amp; Minds<span class="text-electric-pink">.</span>
+    </a>
+
+    <div class="hidden items-center gap-8 font-body text-sm font-medium md:flex" style="color: var(--fg)">
+      <a
+        href="/"
+        class="opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
+        aria-current={active === "home" ? "page" : undefined}
+      >
+        AI Agents
+      </a>
+      <a
+        href="/linkedin-studio"
+        class="opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
+        aria-current={active === "linkedin" ? "page" : undefined}
+      >
+        LinkedIn Studio
+      </a>
+    </div>
+
+    <div class="flex items-center gap-3 sm:gap-4">
+      <ThemeToggle client:load />
+      <Button href={GOOGLE_FORM_URL} external variant="lime" size="md" class="hidden sm:inline-flex">
+        Book a Call
+      </Button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  /*
+   * The transparent (top-of-page) state uses --fg directly, the same
+   * global-toggle-driven color every other component reads, since the
+   * hero underneath it now also follows the toggle (see Section.astro).
+   * Only the SCROLLED (opaque) state needs its own rule here, to swap
+   * background + border together with text color as one unit.
+   */
+  #site-nav {
+    transition: background-color 0.3s var(--ease-snap), border-color 0.3s var(--ease-snap);
+  }
+  #site-nav.nav-scrolled {
+    background-color: color-mix(in srgb, var(--color-white-soft) 85%, transparent);
+    border-bottom: 1px solid var(--divider);
+    backdrop-filter: blur(14px);
+  }
+  :global([data-theme="dark"]) #site-nav.nav-scrolled {
+    background-color: color-mix(in srgb, var(--color-navy-dark) 85%, transparent);
+  }
+</style>
+
+<script>
+  // Re-bound on `astro:page-load` (fires on initial load and after every
+  // view transition swap) since the header itself is replaced per
+  // navigation, not persisted, so its `active` prop stays correct.
+  document.addEventListener("astro:page-load", () => {
+    const nav = document.getElementById("site-nav");
+    if (!nav) return;
+    function updateNav() {
+      nav.classList.toggle("nav-scrolled", window.scrollY > 20);
+    }
+    window.addEventListener("scroll", updateNav, { passive: true });
+    updateNav();
+  });
+</script>

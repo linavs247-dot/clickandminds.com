@@ -1,0 +1,44 @@
+---
+import Section from "../layout/Section.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Highlight from "../ui/Highlight.astro";
+import FadeIn from "../animations/FadeIn.tsx";
+
+const items = [
+  {
+    tag: "// brand_strategy.doc",
+    name: "Brand Strategy Document",
+    description: "Your voice, your pillars, your audience, written down before a single post goes out.",
+  },
+  {
+    tag: "// swipe_file.kit",
+    name: "Swipe File Starter Kit",
+    description: "A library of proven hooks and formats to keep ideas flowing between strategy calls.",
+  },
+  {
+    tag: "// profile_optimization.doc",
+    name: "Profile Optimization Guide",
+    description: "A rewritten headline, about section, and featured section that actually convert.",
+  },
+];
+---
+
+<Section tone="paper">
+  <SectionHeading eyebrow="Before you pay a dollar" headingLead="What you get">
+    <Highlight pin="bottom-left">for free.</Highlight>
+  </SectionHeading>
+
+  <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+    {items.map((item, i) => (
+      <FadeIn client:visible delay={i * 100}>
+        <div class="h-full rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-neon-purple/40 hover:shadow-[0_0_25px_-12px_rgba(143,92,255,0.4)]">
+          <p class="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
+            {item.tag}
+          </p>
+          <h3 class="mt-3 font-display text-lg font-bold text-[var(--fg)]">{item.name}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[var(--fg)]/70">{item.description}</p>
+        </div>
+      </FadeIn>
+    ))}
+  </div>
+</Section>

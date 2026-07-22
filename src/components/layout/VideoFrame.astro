@@ -1,0 +1,69 @@
+---
+// The "futuristic device window" treatment for embedding the demo videos:
+// glass chrome bar + neon border + glow, always meant to sit in a dark
+// section. This is the hero video treatment from the plan, reusable
+// anywhere a video needs the same futuristic frame.
+interface Props {
+  src: string;
+  poster?: string;
+  class?: string;
+}
+
+const { src, poster, class: className = "" } = Astro.props;
+---
+
+<div class={`relative ${className}`}>
+  <div
+    class="relative overflow-hidden rounded-2xl border border-neon-purple/40 bg-navy-dark/70 shadow-[0_0_60px_-10px_rgba(143,92,255,0.5)] backdrop-blur-sm"
+  >
+    <div class="flex items-center gap-1.5 border-b border-white/10 bg-white/5 px-4 py-2.5">
+      <span class="h-2.5 w-2.5 rounded-full bg-electric-pink/80"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-lime/80"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-neon-blue/80"></span>
+    </div>
+    <video
+      class="lazy-demo-video aspect-video w-full object-cover"
+      style="transform: scale(1.07); transform-origin: top left;"
+      data-src={src}
+      poster={poster}
+      muted
+      loop
+      playsinline
+      preload="none"
+    />
+  </div>
+</div>
+
+<script>
+  // Autoplay forces Chrome (and others) to start fetching a video the
+  // moment its `src` is set, ignoring `preload` hints entirely — so every
+  // VideoFrame on the page, including ones far below the fold (e.g. the
+  // one in ShiftSection.astro), was competing for bandwidth with the hero
+  // video on initial load. Deferring `src` until the frame is actually
+  // near the viewport fixes that; `autoplay` isn't set as an attribute at
+  // all, `.play()` is called explicitly once `src` is assigned instead.
+  document.addEventListener("astro:page-load", () => {
+    const videos = document.querySelectorAll<HTMLVideoElement>(
+      ".lazy-demo-video[data-src]"
+    );
+    if (videos.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const video = entry.target as HTMLVideoElement;
+          const src = video.dataset.src;
+          if (src) {
+            video.src = src;
+            video.removeAttribute("data-src");
+            video.play().catch(() => {});
+          }
+          obs.unobserve(video);
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    videos.forEach((video) => observer.observe(video));
+  });
+</script>

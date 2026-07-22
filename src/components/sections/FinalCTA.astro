@@ -1,0 +1,26 @@
+---
+import Section from "../layout/Section.astro";
+import Headline from "../ui/Headline.astro";
+import Highlight from "../ui/Highlight.astro";
+import Button from "../ui/Button.astro";
+import GlowOrb from "../animations/GlowOrb.astro";
+import { GOOGLE_FORM_URL } from "../../lib/constants";
+---
+
+<Section tone="contrast" class="text-center">
+  <GlowOrb color="purple" size={480} class="left-10 top-0" />
+  <GlowOrb color="blue" size={380} class="bottom-0 right-10" />
+
+  <div class="relative mx-auto max-w-2xl">
+    <Headline as="h2" lead="Ready to hire your" class="mx-auto text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
+      <Highlight pin="top-right">first AI employee?</Highlight>
+    </Headline>
+    <p class="mx-auto mt-6 max-w-md text-lg text-[var(--fg)]/75">
+      Tell us what is slowing your business down. We will tell you what an AI employee
+      could take off your plate.
+    </p>
+    <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="mt-9">
+      Book a Strategy Call
+    </Button>
+  </div>
+</Section>

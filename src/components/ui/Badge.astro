@@ -1,0 +1,48 @@
+---
+interface Props {
+  variant?: "pill" | "status-active" | "status-working";
+  class?: string;
+}
+const { variant = "pill", class: className = "" } = Astro.props;
+---
+
+{
+  variant === "pill" && (
+    <span
+      class={`inline-flex items-center rounded-full border border-lime bg-lime/10 px-3 py-1
+      font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-[var(--eyebrow-fg)] ${className}`}
+    >
+      <slot />
+    </span>
+  )
+}
+
+{
+  variant === "status-active" && (
+    <span
+      class={`inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.1em]
+      text-[var(--fg)]/80 ${className}`}
+    >
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75" />
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-lime" />
+      </span>
+      <slot>Active</slot>
+    </span>
+  )
+}
+
+{
+  variant === "status-working" && (
+    <span
+      class={`inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.1em]
+      text-[var(--fg)]/80 ${className}`}
+    >
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-pulse rounded-full bg-neon-blue opacity-75" />
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-neon-blue" />
+      </span>
+      <slot>Working…</slot>
+    </span>
+  )
+}

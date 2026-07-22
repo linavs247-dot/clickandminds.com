@@ -1,0 +1,23 @@
+---
+// A short transition beat before Pricing. Used to also hold Video 3
+// (moved here after it was replaced by the agent showcase carousel in
+// ProductDemosPreview), but the video itself was removed per feedback;
+// the copy stays as written even though it once referenced the video.
+import Section from "../layout/Section.astro";
+import Headline from "../ui/Headline.astro";
+import Highlight from "../ui/Highlight.astro";
+import GlowOrb from "../animations/GlowOrb.astro";
+---
+
+<Section tone="night" class="text-center">
+  <GlowOrb color="blue" size={420} class="-top-24 right-10" />
+  <GlowOrb color="pink" size={340} class="bottom-0 left-10" />
+
+  <Headline as="h2" lead="Built once." class="mx-auto text-3xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-4xl">
+    <Highlight pin="bottom-left">Working every day.</Highlight>
+  </Headline>
+  <p class="mx-auto mt-5 max-w-md text-base text-[var(--fg)]/70">
+    Every AI employee we build keeps running long after the handoff. Here is one
+    doing exactly that.
+  </p>
+</Section>

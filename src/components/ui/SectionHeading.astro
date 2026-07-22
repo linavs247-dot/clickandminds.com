@@ -1,0 +1,33 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+import Headline from "./Headline.astro";
+
+interface Props {
+  eyebrow?: string;
+  // The plain lead-in words before the highlighted phrase (passed to
+  // Headline for the word-stagger reveal), e.g. "Meet your AI" before
+  // "<Highlight>employees.</Highlight>". Not to be confused with the
+  // "lead" named slot below, which is the descriptive paragraph under the
+  // heading.
+  headingLead: string;
+  align?: "left" | "center";
+  class?: string;
+}
+
+const { eyebrow, headingLead, align = "left", class: className = "" } = Astro.props;
+const alignClass = align === "center" ? "text-center mx-auto" : "text-left";
+---
+
+<div class={`max-w-2xl ${alignClass} ${className}`}>
+  {eyebrow && (
+    <Eyebrow class={align === "center" ? "justify-center" : ""}>{eyebrow}</Eyebrow>
+  )}
+  <Headline as="h2" lead={headingLead} class="mt-4 text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
+    <slot />
+  </Headline>
+  {Astro.slots.has("lead") && (
+    <p class="mt-5 text-base leading-relaxed text-[var(--fg-muted)] sm:text-lg">
+      <slot name="lead" />
+    </p>
+  )}
+</div>
