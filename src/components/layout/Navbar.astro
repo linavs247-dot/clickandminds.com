@@ -34,12 +34,56 @@ const { active = "home" } = Astro.props;
     </div>
 
     <div class="flex items-center gap-3 sm:gap-4">
-      <ThemeToggle client:load />
-      <Button href={GOOGLE_FORM_URL} external variant="lime" size="md" class="hidden sm:inline-flex">
+      <div class="hidden items-center gap-3 sm:gap-4 md:flex">
+        <ThemeToggle client:load />
+        <Button href={GOOGLE_FORM_URL} external variant="lime" size="md">Book a Call</Button>
+      </div>
+
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        class="hamburger md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <span class="hamburger-bar" aria-hidden="true"></span>
+        <span class="hamburger-bar" aria-hidden="true"></span>
+        <span class="hamburger-bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="mobile-menu md:hidden" aria-hidden="true" inert>
+    <nav class="mobile-menu-links" aria-label="Mobile">
+      <a
+        href="/"
+        class="font-display text-2xl font-semibold opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
+        style="color: var(--fg)"
+        aria-current={active === "home" ? "page" : undefined}
+      >
+        AI Agents
+      </a>
+      <a
+        href="/linkedin-studio"
+        class="font-display text-2xl font-semibold opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
+        style="color: var(--fg)"
+        aria-current={active === "linkedin" ? "page" : undefined}
+      >
+        LinkedIn Studio
+      </a>
+    </nav>
+
+    <div class="mobile-menu-footer">
+      <div class="flex items-center justify-between">
+        <span class="font-body text-sm font-medium" style="color: var(--fg-muted)">Theme</span>
+        <ThemeToggle client:load />
+      </div>
+      <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="w-full justify-center">
         Book a Call
       </Button>
     </div>
-  </nav>
+  </div>
 </header>
 
 <style>
@@ -61,6 +105,78 @@ const { active = "home" } = Astro.props;
   :global([data-theme="dark"]) #site-nav.nav-scrolled {
     background-color: color-mix(in srgb, var(--color-navy-dark) 85%, transparent);
   }
+
+  /* Hamburger: three bars that morph into an X while the drawer is open. */
+  .hamburger {
+    position: relative;
+    z-index: 50;
+    display: flex;
+    height: 40px;
+    width: 40px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 9999px;
+  }
+  .hamburger-bar {
+    display: block;
+    height: 2px;
+    width: 20px;
+    background-color: var(--fg);
+    border-radius: 2px;
+    transition: transform 0.3s var(--ease-snap), opacity 0.2s var(--ease-snap);
+  }
+  .hamburger.is-open .hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger.is-open .hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.is-open .hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile drawer: full-viewport panel, fades + slides down from under the header. */
+  .mobile-menu {
+    position: fixed;
+    z-index: 40;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 7rem 1.5rem 2.5rem;
+    background-color: color-mix(in srgb, var(--color-white-soft) 97%, transparent);
+    backdrop-filter: blur(20px);
+    opacity: 0;
+    transform: translateY(-16px);
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease-snap), transform 0.35s var(--ease-snap);
+  }
+  :global([data-theme="dark"]) .mobile-menu {
+    background-color: color-mix(in srgb, var(--color-navy-dark) 97%, transparent);
+  }
+  .mobile-menu.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .mobile-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  :global(body.menu-open) {
+    overflow: hidden;
+  }
 </style>
 
 <script>
@@ -70,10 +186,56 @@ const { active = "home" } = Astro.props;
   document.addEventListener("astro:page-load", () => {
     const nav = document.getElementById("site-nav");
     if (!nav) return;
+
+    // Guards against double-binding if this callback ever fires more than
+    // once for the same header instance (astro:page-load can compound
+    // listeners across swaps): without it, repeated navigations would
+    // stack duplicate click handlers on the same live toggle button.
+    if (nav.dataset.navBound === "true") return;
+    nav.dataset.navBound = "true";
+
     function updateNav() {
       nav.classList.toggle("nav-scrolled", window.scrollY > 20);
     }
     window.addEventListener("scroll", updateNav, { passive: true });
     updateNav();
+
+    const menuToggle = document.getElementById("mobile-menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+    if (!menuToggle || !menu) return;
+
+    function onKeydown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        closeMenu();
+        menuToggle?.focus();
+      }
+    }
+
+    function openMenu() {
+      menu?.classList.add("is-open");
+      menuToggle?.classList.add("is-open");
+      menuToggle?.setAttribute("aria-expanded", "true");
+      menu?.setAttribute("aria-hidden", "false");
+      menu?.removeAttribute("inert");
+      document.body.classList.add("menu-open");
+      document.addEventListener("keydown", onKeydown);
+      menu?.querySelector("a")?.focus();
+    }
+
+    function closeMenu() {
+      menu?.classList.remove("is-open");
+      menuToggle?.classList.remove("is-open");
+      menuToggle?.setAttribute("aria-expanded", "false");
+      menu?.setAttribute("aria-hidden", "true");
+      menu?.setAttribute("inert", "");
+      document.body.classList.remove("menu-open");
+      document.removeEventListener("keydown", onKeydown);
+    }
+
+    menuToggle.addEventListener("click", () => {
+      menu.classList.contains("is-open") ? closeMenu() : openMenu();
+    });
+
+    menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
   });
 </script>

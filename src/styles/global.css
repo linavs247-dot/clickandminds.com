@@ -342,4 +342,41 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /*
+   * Agent showcase mockups (ContentAgentSlide, ProposalGeneratorSlide):
+   * their internal grids are always laid out at the wide "desktop
+   * dashboard" width (no responsive stacking) so the two/three panels
+   * stay side-by-side at any viewport. Below 700px this frame scales
+   * that fixed-width layout down to fit the container instead, keeping
+   * the same horizontal proportions instead of squishing into a tall
+   * single column. Scale is clamped to 1 (via the container-query
+   * cutoff itself), so containers >=700px render at natural size,
+   * unchanged from before this existed.
+   */
+  .mockup-frame {
+    container-type: inline-size;
+  }
+
+  .mockup-frame-sizer {
+    position: relative;
+    width: 100%;
+  }
+
+  .mockup-frame-content {
+    width: 700px;
+  }
+
+  @container (max-width: 699.98px) {
+    .mockup-frame-sizer {
+      aspect-ratio: 700 / 400;
+    }
+    .mockup-frame-content {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-origin: top left;
+      transform: scale(calc(100cqw / 700));
+    }
+  }
 }

@@ -119,12 +119,12 @@ export default function AgentShowcaseCarousel() {
           type="button"
           onClick={prev}
           aria-label="Previous slide"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white-soft transition-colors hover:border-lime hover:text-lime"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 text-white-soft transition-colors hover:border-lime hover:text-lime"
         >
           ←
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {SLIDES.map((slide, i) => (
             <button
               key={slide.id}
@@ -132,7 +132,7 @@ export default function AgentShowcaseCarousel() {
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
               aria-current={i === activeIndex ? "true" : undefined}
-              className="flex h-8 w-8 items-center justify-center"
+              className="flex h-8 w-8 shrink-0 items-center justify-center"
             >
               <span
                 className={`block rounded-full transition-all ${
@@ -147,7 +147,7 @@ export default function AgentShowcaseCarousel() {
           type="button"
           onClick={next}
           aria-label="Next slide"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white-soft transition-colors hover:border-lime hover:text-lime"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 text-white-soft transition-colors hover:border-lime hover:text-lime"
         >
           →
         </button>
