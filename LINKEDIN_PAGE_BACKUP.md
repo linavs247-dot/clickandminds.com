@@ -1,4 +1,4 @@
-# LinkedIn Studio Page — Content Backup
+# LinkedIn Studio Page: Content Backup
 
 > This file preserves the full copy, pricing, structure, and design notes
 > for the LinkedIn Studio page (`/linkedin-studio`) before it was removed
@@ -54,7 +54,7 @@ Page section order:
 - Heading: "Choose your" + highlighted "content plan."
 - Section anchor id: `plans`
 
-### Starter — $1,500/mo
+### Starter, $1,500/mo
 - 12 posts written and scheduled every month
 - 2 carousels designed every month
 - 2 infographics designed every month
@@ -66,7 +66,7 @@ Page section order:
 - Monthly analytics report
 - CTA: "Start with Starter"
 
-### Growth — $2,500/mo (Most Popular / featured card)
+### Growth, $2,500/mo (Most Popular / featured card)
 - Everything in Starter
 - 20 posts every month
 - 4 carousels designed every month
@@ -78,7 +78,7 @@ Page section order:
 - Monthly analytics report
 - CTA: "Start with Growth"
 
-### Authority — $3,500/mo
+### Authority, $3,500/mo
 - Subtitle: "The complete content engine"
 - Everything in Growth
 - 30 posts every month
@@ -124,16 +124,16 @@ All plan CTAs link to the Google Form (`GOOGLE_FORM_URL`).
 
 ---
 
-## 6. Process — "How it works" (`LinkedInProcess.astro`)
+## 6. Process: "How it works" (`LinkedInProcess.astro`)
 
 - Eyebrow: **How it works**
 - Heading: "From strategy call to" + highlighted "published post."
 - Four numbered steps, each with a step icon and animated progress line:
 
-1. **We map your voice.** — A strategy call to learn your audience, your goals, and how you actually talk. *(icon: map)*
-2. **We plan the calendar.** — Topics, formats, and cadence planned out before we write a single word. *(icon: calendar)*
-3. **You approve, we create.** — Scripts, carousels, infographics, and video edits, ready for your review. *(icon: check)*
-4. **We publish and report.** — Posts go live on schedule, and you get a monthly report on what worked. *(icon: send)*
+1. **We map your voice.** A strategy call to learn your audience, your goals, and how you actually talk. *(icon: map)*
+2. **We plan the calendar.** Topics, formats, and cadence planned out before we write a single word. *(icon: calendar)*
+3. **You approve, we create.** Scripts, carousels, infographics, and video edits, ready for your review. *(icon: check)*
+4. **We publish and report.** Posts go live on schedule, and you get a monthly report on what worked. *(icon: send)*
 
 ---
 
