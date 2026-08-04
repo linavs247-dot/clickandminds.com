@@ -18,49 +18,73 @@ const icons = ["map", "gear", "sliders", "bolt"] as const;
     <Highlight pin="bottom-left">{copy.highlight}</Highlight>
   </SectionHeading>
 
-  <div class="how-it-works-track relative mt-16">
-    <div class="absolute left-0 right-0 top-6 hidden h-0.5 bg-[var(--fg)]/10 md:block">
-      <div class="how-it-works-fill h-full w-0 bg-lime transition-[width] duration-[1400ms] ease-out"></div>
+  <div class="how-it-works-track relative mx-auto mt-20 max-w-2xl">
+    <div class="absolute left-6 top-1 bottom-1 w-0.5 bg-[var(--fg)]/10">
+      <div class="how-it-works-fill w-full bg-lime transition-[height] duration-700 ease-out" style="height: 0%"></div>
     </div>
 
-    <div class="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-6">
+    <div class="space-y-16">
       {copy.steps.map((step, i) => (
-        <div class="relative">
-          <div class="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[var(--fg)] bg-[var(--card-bg)] font-mono text-sm font-bold text-[var(--fg)]">
+        <div class="how-it-works-step relative pl-20" data-index={i}>
+          <div class="absolute left-0 top-0 z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[var(--fg)] bg-[var(--card-bg)] font-mono text-sm font-bold text-[var(--fg)]">
             {i + 1}
           </div>
-          <h3 class="mt-5 font-display text-lg font-bold text-[var(--fg)]">{step.title}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-[var(--fg)]/70">{step.body}</p>
-          <StepIcon variant={icons[i]} class="mt-4 text-[var(--fg)]/60" />
+          <StepIcon variant={icons[i]} class="mb-4 text-[var(--fg)]/60" />
+          <h3 class="font-display text-2xl font-bold text-[var(--fg)] sm:text-[1.75rem]">{step.title}</h3>
+          <p class="mt-3 max-w-md text-base leading-relaxed text-[var(--fg)]/70">{step.body}</p>
         </div>
       ))}
     </div>
   </div>
 </Section>
 
+<style>
+  .how-it-works-step {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s var(--ease-snap), transform 0.6s var(--ease-snap);
+  }
+  .how-it-works-step.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
 <script>
   // Re-runs on `astro:page-load` so this fires again if the visitor lands
   // here via a client-side view transition, not just a hard page load.
+  // The fill height tracks the highest-index step that has entered view
+  // (not a literal scroll-percentage), so it advances in discrete steps
+  // alongside each card's own reveal rather than drifting independently.
   document.addEventListener("astro:page-load", () => {
     const track = document.querySelector(".how-it-works-track");
     const fill = document.querySelector<HTMLElement>(".how-it-works-fill");
-    if (!track || !fill) return;
+    const steps = Array.from(document.querySelectorAll<HTMLElement>(".how-it-works-step"));
+    if (!track || !fill || steps.length === 0) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
-      fill.style.width = "100%";
-    } else {
-      fill.style.width = "0%";
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            fill.style.width = "100%";
-            observer.disconnect();
-          }
-        },
-        { threshold: 0.4 }
-      );
-      observer.observe(track);
+      fill.style.height = "100%";
+      steps.forEach((step) => step.classList.add("in-view"));
+      return;
     }
+
+    let maxRevealed = -1;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const step = entry.target as HTMLElement;
+          step.classList.add("in-view");
+          const index = Number(step.dataset.index);
+          if (index > maxRevealed) {
+            maxRevealed = index;
+            fill.style.height = `${((maxRevealed + 1) / steps.length) * 100}%`;
+          }
+        }
+      },
+      { threshold: 0.5, rootMargin: "0px 0px -10% 0px" }
+    );
+    steps.forEach((step) => observer.observe(step));
   });
 </script>

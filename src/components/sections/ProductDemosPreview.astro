@@ -2,10 +2,7 @@
 import Section from "../layout/Section.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import Highlight from "../ui/Highlight.astro";
-import Headline from "../ui/Headline.astro";
-import GlowOrb from "../animations/GlowOrb.astro";
-import AgentShowcaseCarousel from "../demos/AgentShowcaseCarousel.tsx";
-import FadeIn from "../animations/FadeIn.tsx";
+import DemoIcon from "../ui/DemoIcon.astro";
 import type { HomeCopy } from "../../i18n/content/types";
 
 interface Props {
@@ -13,9 +10,10 @@ interface Props {
 }
 
 const { copy } = Astro.props;
+const icons = ["writer", "dashboard", "proposal", "leads", "reports"] as const;
 ---
 
-<Section tone="base">
+<Section tone="base" id="demos">
   <SectionHeading eyebrow={copy.eyebrow} headingLead={copy.headlineLead}>
     <Highlight pin="bottom-left">{copy.highlight}</Highlight>
     <p slot="lead">
@@ -23,29 +21,97 @@ const { copy } = Astro.props;
     </p>
   </SectionHeading>
 
-  <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-    {copy.items.map((demo, i) => (
-      <FadeIn client:visible delay={i * 80} className="h-full">
-        <div class="h-full rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1">
-          <div class="h-1.5 w-10 rounded-full bg-lime"></div>
-          <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
-            {demo.tag}
-          </p>
-          <h3 class="mt-2 font-display text-lg font-bold text-[var(--fg)]">{demo.name}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-[var(--fg-muted)]">{demo.description}</p>
-        </div>
-      </FadeIn>
-    ))}
-  </div>
+  <div class="demo-slider relative mt-16">
+    <div class="demo-slider-viewport overflow-hidden">
+      <div class="demo-slider-track flex transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+        {copy.items.map((demo, i) => (
+          <div class="demo-slide w-full shrink-0 px-2">
+            <div class="mx-auto flex max-w-xl flex-col items-center rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] px-8 py-14 text-center backdrop-blur-sm sm:px-14 sm:py-16">
+              <DemoIcon variant={icons[i]} class="h-14 w-14 text-[var(--eyebrow-fg)]" />
+              <p class="mt-6 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/40">
+                {demo.tag}
+              </p>
+              <h3 class="mt-3 font-display text-2xl font-bold text-[var(--fg)] sm:text-3xl">{demo.name}</h3>
+              <p class="mt-4 max-w-sm text-base leading-relaxed text-[var(--fg-muted)]">{demo.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
 
-  <div class="relative mt-16 overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--emphasis-gradient-from)] to-transparent p-10 sm:p-14">
-    <GlowOrb color="purple" size={420} class="-top-20 -right-20" />
-    <div class="relative z-10 text-center">
-      <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--eyebrow-fg)]">{copy.carouselEyebrow}</p>
-      <Headline as="h3" lead={copy.carouselHeadlineLead} class="mx-auto mt-4 max-w-lg text-3xl font-display font-extrabold leading-[1.15] sm:text-4xl">
-        <Highlight pin="top-right">{copy.carouselHighlight}</Highlight>
-      </Headline>
-      <AgentShowcaseCarousel client:visible />
+    <button
+      type="button"
+      class="demo-slider-prev absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--fg)]/20 bg-[var(--card-bg)] text-[var(--fg)] backdrop-blur-sm transition-colors hover:border-lime hover:text-lime sm:-left-4"
+      aria-label="Previous slide"
+    >
+      &larr;
+    </button>
+    <button
+      type="button"
+      class="demo-slider-next absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--fg)]/20 bg-[var(--card-bg)] text-[var(--fg)] backdrop-blur-sm transition-colors hover:border-lime hover:text-lime sm:-right-4"
+      aria-label="Next slide"
+    >
+      &rarr;
+    </button>
+
+    <div class="mt-8 flex items-center justify-center gap-2">
+      {copy.items.map((_, i) => (
+        <button
+          type="button"
+          class="demo-slider-dot flex h-8 w-8 items-center justify-center"
+          data-index={i}
+          aria-label={`Go to slide ${i + 1}`}
+        >
+          <span class="block h-2 w-2 rounded-full bg-[var(--fg)]/25 transition-all"></span>
+        </button>
+      ))}
     </div>
   </div>
 </Section>
+
+<script>
+  // Vanilla-JS slider: no scroll-snap (janky when driven by button clicks
+  // across a single-slide-per-view layout) and no drag library, just a
+  // translateX transform with a CSS transition, advanced by prev/next/dot
+  // clicks. Re-bound on `astro:page-load` for view-transition safety, with
+  // a `data-bound` guard against double-binding on repeated swaps.
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLElement>(".demo-slider").forEach((slider) => {
+      if (slider.dataset.bound === "true") return;
+      slider.dataset.bound = "true";
+
+      const track = slider.querySelector<HTMLElement>(".demo-slider-track");
+      const slides = Array.from(slider.querySelectorAll<HTMLElement>(".demo-slide"));
+      const dots = Array.from(slider.querySelectorAll<HTMLElement>(".demo-slider-dot"));
+      const prevBtn = slider.querySelector<HTMLButtonElement>(".demo-slider-prev");
+      const nextBtn = slider.querySelector<HTMLButtonElement>(".demo-slider-next");
+      if (!track || slides.length === 0) return;
+
+      let index = 0;
+
+      function render() {
+        track!.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach((dot, i) => {
+          const span = dot.querySelector("span");
+          if (!span) return;
+          span.className =
+            i === index
+              ? "block h-2 w-6 rounded-full bg-lime transition-all"
+              : "block h-2 w-2 rounded-full bg-[var(--fg)]/25 transition-all";
+          dot.setAttribute("aria-current", i === index ? "true" : "false");
+        });
+      }
+
+      function goTo(next: number) {
+        index = (next + slides.length) % slides.length;
+        render();
+      }
+
+      prevBtn?.addEventListener("click", () => goTo(index - 1));
+      nextBtn?.addEventListener("click", () => goTo(index + 1));
+      dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+
+      render();
+    });
+  });
+</script>

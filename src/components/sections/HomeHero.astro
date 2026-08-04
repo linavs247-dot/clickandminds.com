@@ -34,13 +34,15 @@ const { copy } = Astro.props;
         <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg">
           {copy.ctaPrimary}
         </Button>
-        <Button href="#ai-employee-gallery" variant="ghost" size="lg">
+        <Button href="#demos" variant="ghost" size="lg">
           {copy.ctaSecondary}
         </Button>
       </div>
     </div>
 
-    <VideoFrame src="/videos/video-1-demo.mp4" class="w-full" />
+    <div class="relative lg:w-[122%]">
+      <VideoFrame src="/videos/video-1-demo.mp4" variant="immersive" class="w-full" />
+    </div>
   </div>
 </Section>
 

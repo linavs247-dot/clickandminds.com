@@ -1,38 +1,66 @@
 ---
-// The "futuristic device window" treatment for embedding the demo videos:
-// glass chrome bar + neon border + glow, always meant to sit in a dark
-// section. This is the hero video treatment from the plan, reusable
-// anywhere a video needs the same futuristic frame.
+// Two treatments for embedding the demo videos:
+//   - "framed" (default): the "futuristic device window" look, glass
+//     chrome bar + neon border + glow, sits in a dark section like a
+//     little screen.
+//   - "immersive": no box at all, video bleeds to its container's edges
+//     with a gradient mask fading it into the section background, for
+//     hero-style placements where a boxed card reads too "product
+//     screenshot" and not enough "part of the scene."
+// Both keep the same watermark-hiding trick: the source video has a
+// small corner watermark, so it's scaled up and anchored top-left, then
+// cropped by the wrapper's own overflow-hidden, pushing the watermark
+// off the visible edge.
 interface Props {
   src: string;
   poster?: string;
   class?: string;
+  variant?: "framed" | "immersive";
 }
 
-const { src, poster, class: className = "" } = Astro.props;
+const { src, poster, class: className = "", variant = "framed" } = Astro.props;
 ---
 
-<div class={`relative ${className}`}>
-  <div
-    class="relative overflow-hidden rounded-2xl border border-neon-purple/40 bg-navy-dark/70 shadow-[0_0_60px_-10px_rgba(143,92,255,0.5)] backdrop-blur-sm"
-  >
-    <div class="flex items-center gap-1.5 border-b border-white/10 bg-white/5 px-4 py-2.5">
-      <span class="h-2.5 w-2.5 rounded-full bg-electric-pink/80"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-lime/80"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-neon-blue/80"></span>
+{
+  variant === "framed" ? (
+    <div class={`relative ${className}`}>
+      <div class="relative overflow-hidden rounded-2xl border border-neon-purple/40 bg-navy-dark/70 shadow-[0_0_60px_-10px_rgba(143,92,255,0.5)] backdrop-blur-sm">
+        <div class="flex items-center gap-1.5 border-b border-white/10 bg-white/5 px-4 py-2.5">
+          <span class="h-2.5 w-2.5 rounded-full bg-electric-pink/80" />
+          <span class="h-2.5 w-2.5 rounded-full bg-lime/80" />
+          <span class="h-2.5 w-2.5 rounded-full bg-neon-blue/80" />
+        </div>
+        <video
+          class="lazy-demo-video aspect-video w-full object-cover"
+          style="transform: scale(1.07); transform-origin: top left;"
+          data-src={src}
+          poster={poster}
+          muted
+          loop
+          playsinline
+          preload="none"
+        />
+      </div>
     </div>
-    <video
-      class="lazy-demo-video aspect-video w-full object-cover"
-      style="transform: scale(1.07); transform-origin: top left;"
-      data-src={src}
-      poster={poster}
-      muted
-      loop
-      playsinline
-      preload="none"
-    />
-  </div>
-</div>
+  ) : (
+    <div class={`relative overflow-hidden rounded-[2rem] ${className}`}>
+      <video
+        class="lazy-demo-video aspect-video w-full object-cover"
+        style="transform: scale(1.06); transform-origin: top left;"
+        data-src={src}
+        poster={poster}
+        muted
+        loop
+        playsinline
+        preload="none"
+      />
+      <div
+        class="pointer-events-none absolute inset-0 [background:linear-gradient(105deg,transparent_45%,var(--color-navy-dark)_105%),linear-gradient(to_top,var(--color-navy-dark)_0%,transparent_35%)]"
+        aria-hidden="true"
+      />
+    </div>
+  )
+}
 
 <script>
   // Autoplay forces Chrome (and others) to start fetching a video the
