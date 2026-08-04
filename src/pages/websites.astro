@@ -3,37 +3,61 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/layout/Navbar.astro";
 import Footer from "../components/layout/Footer.astro";
 import Section from "../components/layout/Section.astro";
-import Badge from "../components/ui/Badge.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
 import Headline from "../components/ui/Headline.astro";
 import Highlight from "../components/ui/Highlight.astro";
 import Button from "../components/ui/Button.astro";
 import GlowOrb from "../components/animations/GlowOrb.astro";
+import WebsitesServices from "../components/sections/WebsitesServices.astro";
+import Testimonials from "../components/sections/Testimonials.astro";
+import WebsitesProcess from "../components/sections/WebsitesProcess.astro";
 import { GOOGLE_FORM_URL } from "../lib/constants";
-import { defaultLocale, useTranslations, type Locale } from "../i18n/ui";
 import { websitesEn } from "../i18n/content/websites.en";
 
-const locale = (Astro.currentLocale as Locale | undefined) ?? defaultLocale;
-const t = useTranslations(locale);
 const copy = websitesEn;
 ---
 
-<Layout title="Websites" description={copy.body}>
+<Layout
+  title="Websites"
+  description="Click & Minds designs websites, sales funnels, and brand identities built to turn visitors into paying clients."
+>
   <Navbar active="websites" />
   <main>
-    <Section tone="emphasis" class="flex min-h-screen items-center pt-32 text-center sm:pt-40">
+    <Section tone="emphasis" class="pt-32 text-center sm:pt-40">
       <GlowOrb color="purple" size={480} class="-top-24 left-1/4" />
       <GlowOrb color="blue" size={360} class="bottom-0 right-1/4" />
 
       <div class="relative mx-auto max-w-2xl">
-        <Badge>{t.comingSoon.badge}</Badge>
-        <Headline as="h1" lead={copy.headlineLead} class="mx-auto mt-5 text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
-          <Highlight pin="top-right">{copy.highlight}</Highlight>
+        <Eyebrow class="justify-center">{copy.hero.eyebrow}</Eyebrow>
+        <Headline as="h1" lead={copy.hero.headlineLead} class="mx-auto mt-5 text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl">
+          <Highlight pin="top-right">{copy.hero.highlight}</Highlight>
         </Headline>
-        <p class="mx-auto mt-6 max-w-md text-lg leading-relaxed text-[var(--fg)]/75">
-          {copy.body}
+        <p class="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-[var(--fg)]/75">
+          {copy.hero.body}
         </p>
         <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="mt-9">
-          {copy.cta}
+          {copy.hero.cta}
+        </Button>
+      </div>
+    </Section>
+
+    <WebsitesServices copy={copy.services} />
+    <Testimonials copy={copy.testimonials} />
+    <WebsitesProcess copy={copy.process} />
+
+    <Section tone="emphasis" class="text-center">
+      <GlowOrb color="purple" size={480} class="left-10 top-0" />
+      <GlowOrb color="blue" size={380} class="bottom-0 right-10" />
+
+      <div class="relative mx-auto max-w-2xl">
+        <Headline as="h2" lead={copy.finalCta.headlineLead} class="mx-auto text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
+          <Highlight pin="top-right">{copy.finalCta.highlight}</Highlight>
+        </Headline>
+        <p class="mx-auto mt-6 max-w-md text-lg text-[var(--fg)]/75">
+          {copy.finalCta.body}
+        </p>
+        <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="mt-9">
+          {copy.finalCta.cta}
         </Button>
       </div>
     </Section>

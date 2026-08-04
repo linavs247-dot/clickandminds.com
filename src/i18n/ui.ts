@@ -18,6 +18,10 @@ export const ui = {
       services: "Services",
       getStarted: "Get started",
       copyright: "© 2026 Click & Minds. Content & AI Systems Studio.",
+      findMe: "Find me",
+      linkedin: "LinkedIn",
+      newsletter: "Join My Newsletter",
+      email: "Email",
     },
     comingSoon: {
       badge: "Coming soon",
@@ -39,6 +43,10 @@ export const ui = {
       services: "Servicios",
       getStarted: "Comienza",
       copyright: "© 2026 Click & Minds. Estudio de Contenido y Sistemas de IA.",
+      findMe: "Encuéntrame",
+      linkedin: "LinkedIn",
+      newsletter: "Únete a Mi Newsletter",
+      email: "Correo",
     },
     comingSoon: {
       badge: "Próximamente",

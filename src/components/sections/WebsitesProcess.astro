@@ -1,0 +1,36 @@
+---
+import Section from "../layout/Section.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Highlight from "../ui/Highlight.astro";
+import StepIcon from "../ui/StepIcon.astro";
+import FadeIn from "../animations/FadeIn.tsx";
+import type { WebsitesPageCopy } from "../../i18n/content/types";
+
+interface Props {
+  copy: WebsitesPageCopy["process"];
+}
+
+const { copy } = Astro.props;
+const icons = ["map", "sliders", "gear", "bolt"] as const;
+---
+
+<Section tone="base">
+  <SectionHeading eyebrow={copy.eyebrow} align="center" class="mx-auto" headingLead={copy.headlineLead}>
+    <Highlight pin="bottom-left">{copy.highlight}</Highlight>
+  </SectionHeading>
+
+  <div class="mt-16 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+    {copy.steps.map((step, i) => (
+      <FadeIn client:visible delay={i * 100}>
+        <div>
+          <div class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-[var(--fg)] bg-[var(--card-bg)] font-mono text-sm font-bold text-[var(--fg)]">
+            {i + 1}
+          </div>
+          <StepIcon variant={icons[i]} class="mt-4 text-[var(--fg)]/60" />
+          <h3 class="mt-4 font-display text-lg font-bold text-[var(--fg)]">{step.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[var(--fg)]/70">{step.body}</p>
+        </div>
+      </FadeIn>
+    ))}
+  </div>
+</Section>

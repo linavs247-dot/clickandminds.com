@@ -1,0 +1,114 @@
+---
+import Section from "../layout/Section.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Highlight from "../ui/Highlight.astro";
+import type { WebsitesPageCopy } from "../../i18n/content/types";
+
+interface Props {
+  copy: WebsitesPageCopy["testimonials"];
+}
+
+const { copy } = Astro.props;
+---
+
+<Section tone="base">
+  <SectionHeading eyebrow={copy.eyebrow} align="center" class="mx-auto" headingLead={copy.headlineLead}>
+    <Highlight pin="top-right">{copy.highlight}</Highlight>
+  </SectionHeading>
+
+  <div class="testimonial-slider relative mt-16">
+    <div class="testimonial-slider-viewport overflow-hidden">
+      <div class="testimonial-slider-track flex items-stretch transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+        {copy.items.map((testimonial) => (
+          <div class="testimonial-slide w-full shrink-0 px-2">
+            <div class="mx-auto flex h-full max-w-xl flex-col items-center rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] px-8 py-12 text-center backdrop-blur-sm sm:px-14 sm:py-14">
+              <div class="text-lime" aria-hidden="true">★★★★★</div>
+              <p class="mt-6 max-w-md text-base leading-relaxed text-[var(--fg)]/85">
+                &ldquo;{testimonial.quote}&rdquo;
+              </p>
+              <p class="mt-6 font-display text-sm font-bold text-[var(--fg)]">{testimonial.name}</p>
+              {testimonial.role && (
+                <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/40">
+                  {testimonial.role}
+                </p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="testimonial-slider-prev absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--fg)]/20 bg-[var(--card-bg)] text-[var(--fg)] backdrop-blur-sm transition-colors hover:border-lime hover:text-lime sm:-left-4"
+      aria-label="Previous testimonial"
+    >
+      &larr;
+    </button>
+    <button
+      type="button"
+      class="testimonial-slider-next absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--fg)]/20 bg-[var(--card-bg)] text-[var(--fg)] backdrop-blur-sm transition-colors hover:border-lime hover:text-lime sm:-right-4"
+      aria-label="Next testimonial"
+    >
+      &rarr;
+    </button>
+
+    <div class="mt-8 flex items-center justify-center gap-2">
+      {copy.items.map((_, i) => (
+        <button
+          type="button"
+          class="testimonial-slider-dot flex h-8 w-8 items-center justify-center"
+          data-index={i}
+          aria-label={`Go to testimonial ${i + 1}`}
+        >
+          <span class="block h-2 w-2 rounded-full bg-[var(--fg)]/25 transition-all"></span>
+        </button>
+      ))}
+    </div>
+  </div>
+</Section>
+
+<script>
+  // Same vanilla-JS slider pattern as ProductDemosPreview.astro's demo
+  // slider, scoped under its own class prefix so the two don't collide
+  // if both render on a page.
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLElement>(".testimonial-slider").forEach((slider) => {
+      if (slider.dataset.bound === "true") return;
+      slider.dataset.bound = "true";
+
+      const track = slider.querySelector<HTMLElement>(".testimonial-slider-track");
+      const slides = Array.from(slider.querySelectorAll<HTMLElement>(".testimonial-slide"));
+      const dots = Array.from(slider.querySelectorAll<HTMLElement>(".testimonial-slider-dot"));
+      const prevBtn = slider.querySelector<HTMLButtonElement>(".testimonial-slider-prev");
+      const nextBtn = slider.querySelector<HTMLButtonElement>(".testimonial-slider-next");
+      if (!track || slides.length === 0) return;
+
+      let index = 0;
+
+      function render() {
+        track!.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach((dot, i) => {
+          const span = dot.querySelector("span");
+          if (!span) return;
+          span.className =
+            i === index
+              ? "block h-2 w-6 rounded-full bg-lime transition-all"
+              : "block h-2 w-2 rounded-full bg-[var(--fg)]/25 transition-all";
+          dot.setAttribute("aria-current", i === index ? "true" : "false");
+        });
+      }
+
+      function goTo(next: number) {
+        index = (next + slides.length) % slides.length;
+        render();
+      }
+
+      prevBtn?.addEventListener("click", () => goTo(index - 1));
+      nextBtn?.addEventListener("click", () => goTo(index + 1));
+      dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+
+      render();
+    });
+  });
+</script>

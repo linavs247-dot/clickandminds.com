@@ -42,6 +42,57 @@ export interface PlanCopy {
   cta: string;
 }
 
+export interface ServiceCopy {
+  name: string;
+  outcome: string;
+  includes: string[];
+}
+
+export interface TestimonialCopy {
+  quote: string;
+  name: string;
+  role?: string;
+}
+
+export interface ProcessStepCopy {
+  title: string;
+  body: string;
+}
+
+export interface WebsitesPageCopy {
+  hero: {
+    eyebrow: string;
+    headlineLead: string;
+    highlight: string;
+    body: string;
+    cta: string;
+  };
+  services: {
+    eyebrow: string;
+    headlineLead: string;
+    highlight: string;
+    items: ServiceCopy[];
+  };
+  testimonials: {
+    eyebrow: string;
+    headlineLead: string;
+    highlight: string;
+    items: TestimonialCopy[];
+  };
+  process: {
+    eyebrow: string;
+    headlineLead: string;
+    highlight: string;
+    steps: ProcessStepCopy[];
+  };
+  finalCta: {
+    headlineLead: string;
+    highlight: string;
+    body: string;
+    cta: string;
+  };
+}
+
 export interface HomeCopy {
   hero: {
     eyebrow: string;
