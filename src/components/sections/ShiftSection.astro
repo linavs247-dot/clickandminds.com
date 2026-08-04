@@ -5,9 +5,16 @@ import Headline from "../ui/Headline.astro";
 import Highlight from "../ui/Highlight.astro";
 import GlowOrb from "../animations/GlowOrb.astro";
 import VideoFrame from "../layout/VideoFrame.astro";
+import type { HomeCopy } from "../../i18n/content/types";
+
+interface Props {
+  copy: HomeCopy["shift"];
+}
+
+const { copy } = Astro.props;
 ---
 
-<Section tone="night">
+<Section tone="emphasis">
   <GlowOrb color="blue" size={480} class="-bottom-32 -right-20" />
   <GlowOrb color="purple" size={360} class="top-0 left-10" />
 
@@ -15,14 +22,12 @@ import VideoFrame from "../layout/VideoFrame.astro";
     <VideoFrame src="/videos/video-2-demo.mp4" class="w-full lg:order-2" />
 
     <div class="lg:order-1">
-      <Eyebrow>A new kind of team</Eyebrow>
-      <Headline as="h2" lead="What if you had a" class="mt-5 text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
-        <Highlight pin="bottom-left">digital team?</Highlight>
+      <Eyebrow>{copy.eyebrow}</Eyebrow>
+      <Headline as="h2" lead={copy.headlineLead} class="mt-5 text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
+        <Highlight pin="bottom-left">{copy.highlight}</Highlight>
       </Headline>
       <p class="mt-6 max-w-lg text-lg leading-relaxed text-[var(--fg-muted)]">
-        Not another tool. Not another chatbot. A team of AI employees trained to work
-        inside your business. Available 24/7. Fast. Consistent. Built around your
-        workflows.
+        {copy.body}
       </p>
     </div>
   </div>

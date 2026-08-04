@@ -7,106 +7,34 @@ import AgentCard from "../demos/AgentCard.astro";
 import Button from "../ui/Button.astro";
 import FadeIn from "../animations/FadeIn.tsx";
 import { GOOGLE_FORM_URL } from "../../lib/constants";
+import type { HomeCopy } from "../../i18n/content/types";
 
-const agents = [
-  {
-    tag: "// content_strategist.agent",
-    name: "AI Content Strategist",
-    status: "active" as const,
-    description:
-      "Research trending topics, generate unlimited content ideas, and build monthly calendars before your coffee gets cold.",
-    features: [
-      "Researches trending topics daily",
-      "Generates unlimited content ideas",
-      "Builds monthly content calendars",
-      "Repurposes long form into dozens of posts",
-    ],
-    liveMessages: [
-      "Researching: \"AI trends 2026\"",
-      "Draft ready: 5 posts",
-      "Calendar updated for March",
-    ],
-    insight: "Typical output: 20+ ideas and 12 ready to post pieces every month.",
-  },
-  {
-    tag: "// sales_assistant.agent",
-    name: "AI Sales Assistant",
-    status: "working" as const,
-    description:
-      "Finds qualified leads, personalizes outreach, and follows up automatically so meetings get booked while you sleep.",
-    features: [
-      "Finds qualified leads",
-      "Personalizes every outreach message",
-      "Follows up automatically",
-      "Updates your CRM in real time",
-    ],
-    liveMessages: [
-      "New lead: Sarah Chen, score 92",
-      "Follow up sent to 4 leads",
-      "Meeting booked for Thursday",
-    ],
-    insight: "Books an average of 8 qualified meetings a month, hands free.",
-  },
-  {
-    tag: "// client_success.agent",
-    name: "AI Client Success Manager",
-    status: "active" as const,
-    description:
-      "Onboards new clients, answers common questions, and keeps every client experience consistent.",
-    features: [
-      "Onboards new clients",
-      "Answers common questions",
-      "Schedules meetings",
-      "Tracks deliverables",
-    ],
-    liveMessages: [
-      "Onboarding started: Nimbus Retail",
-      "Question answered in 12 seconds",
-      "Deliverable marked complete",
-    ],
-    insight: "Keeps every client on the same experience, even when you are fully booked.",
-  },
-  {
-    tag: "// content_dashboard.tool",
-    name: "Content Dashboard",
-    status: "active" as const,
-    description:
-      "One place to plan, write, and ship content. No more ideas scattered across notes apps and docs that never talk to each other.",
-    features: [
-      "Tracks your full content pipeline",
-      "Pulls performance data automatically",
-      "Tells you what to write next",
-      "Connects drafts to what already works",
-    ],
-    liveMessages: [
-      "Pipeline synced",
-      "Top post flagged: 3.2x reach",
-      "Next topic suggested",
-    ],
-    insight: "Pulls performance data automatically, so you always know what to write next.",
-  },
-];
+interface Props {
+  copy: HomeCopy["gallery"];
+}
+
+const { copy } = Astro.props;
+const statuses = ["active", "working", "active", "active"] as const;
 ---
 
-<Section tone="night" id="ai-employee-gallery">
+<Section tone="emphasis" id="ai-employee-gallery">
   <GlowOrb color="pink" size={480} class="-top-32 right-10" />
   <GlowOrb color="purple" size={420} class="bottom-0 -left-20" />
 
-  <SectionHeading eyebrow="The centerpiece" headingLead="Meet your AI">
-    <Highlight pin="top-right">employees.</Highlight>
+  <SectionHeading eyebrow={copy.eyebrow} headingLead={copy.headlineLead}>
+    <Highlight pin="top-right">{copy.highlight}</Highlight>
     <p slot="lead">
-      Every AI employee is designed around your business, not sold off a shelf. Here is
-      what we build most often.
+      {copy.leadText}
     </p>
   </SectionHeading>
 
   <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-    {agents.map((agent, i) => (
+    {copy.agents.map((agent, i) => (
       <FadeIn client:visible delay={i * 100} className="h-full">
         <AgentCard
           tag={agent.tag}
           name={agent.name}
-          status={agent.status}
+          status={statuses[i] ?? "active"}
           description={agent.description}
           features={agent.features}
           liveMessages={agent.liveMessages}
@@ -116,20 +44,19 @@ const agents = [
       </FadeIn>
     ))}
 
-    <FadeIn client:visible delay={agents.length * 100}>
+    <FadeIn client:visible delay={copy.agents.length * 100}>
       <div class="flex h-full flex-col justify-between rounded-3xl border-2 border-dashed border-lime/40 bg-[var(--card-bg)] p-7">
         <div>
           <p class="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--eyebrow-fg)]">// custom.agent</p>
           <h3 class="mt-2 font-display text-xl font-bold text-[var(--fg)]">
-            Any internal tool you need.
+            {copy.customCard.title}
           </h3>
           <p class="mt-4 text-sm leading-relaxed text-[var(--fg-muted)]">
-            If it is repetitive, rule based, or eating your week, we can probably build an
-            AI employee for it. Tell us what is slowing you down.
+            {copy.customCard.body}
           </p>
         </div>
         <Button href={GOOGLE_FORM_URL} external variant="lime" size="md" class="mt-6 self-start">
-          Tell Us What You Need
+          {copy.customCard.cta}
         </Button>
       </div>
     </FadeIn>

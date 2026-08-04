@@ -1,0 +1,40 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { defaultLocale, type Locale } from "../../i18n/ui";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+
+const currentLocale = (Astro.currentLocale as Locale | undefined) ?? defaultLocale;
+const pathname = Astro.url.pathname;
+const prefix = `/${currentLocale}`;
+const basePath =
+  currentLocale !== defaultLocale && pathname.startsWith(prefix)
+    ? pathname.slice(prefix.length) || "/"
+    : pathname;
+
+const orderedLocales: Locale[] = ["es", "en"];
+const labels: Record<Locale, string> = { es: "ES", en: "EN" };
+---
+
+<nav aria-label="Language" class={`flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.1em] ${className}`}>
+  {orderedLocales.map((locale, i) => (
+    <>
+      {i > 0 && <span class="text-[var(--fg)]/30" aria-hidden="true">|</span>}
+      <a
+        href={getRelativeLocaleUrl(locale, basePath)}
+        aria-current={locale === currentLocale ? "true" : undefined}
+        class={`transition-opacity hover:opacity-100 ${
+          locale === currentLocale
+            ? "text-[var(--fg)] opacity-100 underline decoration-lime underline-offset-4"
+            : "text-[var(--fg)] opacity-60"
+        }`}
+      >
+        {labels[locale]}
+      </a>
+    </>
+  ))}
+</nav>

@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/layout/Navbar.astro";
+import Footer from "../../components/layout/Footer.astro";
+import HomeHero from "../../components/sections/HomeHero.astro";
+import PainSection from "../../components/sections/PainSection.astro";
+import ShiftSection from "../../components/sections/ShiftSection.astro";
+import AIEmployeeGallery from "../../components/sections/AIEmployeeGallery.astro";
+import ProductDemosPreview from "../../components/sections/ProductDemosPreview.astro";
+import HowItWorks from "../../components/sections/HowItWorks.astro";
+import WhySwitching from "../../components/sections/WhySwitching.astro";
+import Video3Moment from "../../components/sections/Video3Moment.astro";
+import Pricing from "../../components/sections/Pricing.astro";
+import LimitedSpots from "../../components/sections/LimitedSpots.astro";
+import FinalCTA from "../../components/sections/FinalCTA.astro";
+import { homeEs } from "../../i18n/content/home.es";
+
+const copy = homeEs;
+---
+
+<Layout
+  title="Agentes de IA y Automatización"
+  description="Click & Minds diseña empleados de IA personalizados que investigan, escriben, organizan, venden y dan soporte a tu negocio las veinticuatro horas del día. Hecho para fundadores, creadores y dueños de negocio."
+>
+  <Navbar active="home" />
+  <main>
+    <HomeHero copy={copy.hero} />
+    <PainSection copy={copy.pain} />
+    <ShiftSection copy={copy.shift} />
+    <AIEmployeeGallery copy={copy.gallery} />
+    <ProductDemosPreview copy={copy.demos} />
+    <HowItWorks copy={copy.howItWorks} />
+    <WhySwitching copy={copy.whySwitching} />
+    <Video3Moment copy={copy.video3} />
+    <Pricing copy={copy.pricing} />
+    <LimitedSpots copy={copy.limitedSpots} />
+    <FinalCTA copy={copy.finalCta} />
+  </main>
+  <Footer />
+</Layout>

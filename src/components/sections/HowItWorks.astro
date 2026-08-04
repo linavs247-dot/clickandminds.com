@@ -3,18 +3,19 @@ import Section from "../layout/Section.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import Highlight from "../ui/Highlight.astro";
 import StepIcon from "../ui/StepIcon.astro";
+import type { HomeCopy } from "../../i18n/content/types";
 
-const steps = [
-  { title: "We map your workflow.", body: "We learn how your business actually runs before we design anything.", icon: "map" as const },
-  { title: "We design your AI employee.", body: "We scope exactly what it should do, and how it fits your business.", icon: "gear" as const },
-  { title: "We customize it to you.", body: "Your brand, your tone, your tools. Nothing generic, nothing off the shelf.", icon: "sliders" as const },
-  { title: "It starts working for you.", body: "Your AI employee goes live and keeps working, day and night.", icon: "bolt" as const },
-];
+interface Props {
+  copy: HomeCopy["howItWorks"];
+}
+
+const { copy } = Astro.props;
+const icons = ["map", "gear", "sliders", "bolt"] as const;
 ---
 
-<Section tone="paper">
-  <SectionHeading eyebrow="How it works" align="center" class="mx-auto" headingLead="From workflow to">
-    <Highlight pin="bottom-left">working AI employee.</Highlight>
+<Section tone="base">
+  <SectionHeading eyebrow={copy.eyebrow} align="center" class="mx-auto" headingLead={copy.headlineLead}>
+    <Highlight pin="bottom-left">{copy.highlight}</Highlight>
   </SectionHeading>
 
   <div class="how-it-works-track relative mt-16">
@@ -23,14 +24,14 @@ const steps = [
     </div>
 
     <div class="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-6">
-      {steps.map((step, i) => (
+      {copy.steps.map((step, i) => (
         <div class="relative">
           <div class="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[var(--fg)] bg-[var(--card-bg)] font-mono text-sm font-bold text-[var(--fg)]">
             {i + 1}
           </div>
           <h3 class="mt-5 font-display text-lg font-bold text-[var(--fg)]">{step.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-[var(--fg)]/70">{step.body}</p>
-          <StepIcon variant={step.icon} class="mt-4 text-[var(--fg)]/60" />
+          <StepIcon variant={icons[i]} class="mt-4 text-[var(--fg)]/60" />
         </div>
       ))}
     </div>

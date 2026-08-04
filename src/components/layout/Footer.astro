@@ -1,13 +1,14 @@
 ---
 import Button from "../ui/Button.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { GOOGLE_FORM_URL } from "../../lib/constants";
+import { defaultLocale, useTranslations, type Locale } from "../../i18n/ui";
 
-// No logo file or social links exist yet (flagged during the styleguide
-// review), so this stays a text wordmark with no social icon row rather
-// than inventing links that do not exist.
+const locale = (Astro.currentLocale as Locale | undefined) ?? defaultLocale;
+const t = useTranslations(locale);
 ---
 
-<footer data-theme="dark" class="relative overflow-hidden bg-dark-deep px-6 py-16 text-white-soft">
+<footer class="relative overflow-hidden bg-dark-deep px-6 py-16 text-white-soft">
   <div class="mx-auto max-w-6xl">
     <div class="grid grid-cols-1 gap-10 border-b border-white/10 pb-10 sm:grid-cols-2 md:grid-cols-4">
       <div class="md:col-span-2">
@@ -15,26 +16,27 @@ import { GOOGLE_FORM_URL } from "../../lib/constants";
           Click &amp; Minds<span class="text-electric-pink">.</span>
         </p>
         <p class="mt-3 max-w-xs text-sm text-white-soft/65">
-          Content and AI systems studio. We build the AI employees and the content that
-          run your business while you focus on the work only you can do.
+          {t.footer.tagline}
         </p>
       </div>
 
       <div>
-        <p class="mb-4 font-mono text-[10px] uppercase tracking-[0.15em] text-lime">Services</p>
+        <p class="mb-4 font-mono text-[10px] uppercase tracking-[0.15em] text-lime">{t.footer.services}</p>
         <nav class="flex flex-col gap-2 text-sm text-white-soft/70">
-          <a href="/" class="w-fit transition-colors hover:text-lime">AI Agents</a>
+          <a href={getRelativeLocaleUrl(locale, "/")} class="w-fit transition-colors hover:text-lime">{t.nav.aiAgents}</a>
+          <a href={getRelativeLocaleUrl(locale, "/websites")} class="w-fit transition-colors hover:text-lime">{t.nav.websites}</a>
+          <a href={getRelativeLocaleUrl(locale, "/portfolio")} class="w-fit transition-colors hover:text-lime">{t.nav.portfolio}</a>
         </nav>
       </div>
 
       <div>
-        <p class="mb-4 font-mono text-[10px] uppercase tracking-[0.15em] text-lime">Get started</p>
-        <Button href={GOOGLE_FORM_URL} external variant="ghost" size="md">Book a Call</Button>
+        <p class="mb-4 font-mono text-[10px] uppercase tracking-[0.15em] text-lime">{t.footer.getStarted}</p>
+        <Button href={GOOGLE_FORM_URL} external variant="ghost" size="md">{t.nav.bookACall}</Button>
       </div>
     </div>
 
     <div class="flex flex-col gap-2 pt-6 font-mono text-[11px] text-white-soft/50 sm:flex-row sm:items-center sm:justify-between">
-      <p>© 2026 Click &amp; Minds. Content &amp; AI Systems Studio.</p>
+      <p>{t.footer.copyright}</p>
     </div>
   </div>
 </footer>

@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* Dark mode is driven by a data-theme attribute on <html>, toggled via ThemeToggle.
-   Not tied to prefers-color-scheme: the visitor controls it explicitly. */
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
-
 @theme {
   /* ---- Brand palette (official, see PLAN_CLICK_AND_MINDS.md) ---- */
   --color-purple-primary: #38206F;
@@ -34,47 +30,12 @@
 }
 
 /*
- * Theme-aware color tokens, resolved via CSS custom properties, driven
- * SOLELY by the global day/night toggle (data-theme on <html>, set by
- * ThemeToggle.tsx and bootstrapped before paint in Layout.astro). Every
- * section reads these same tokens, there is no per-section override
- * layer any more (Section.astro used to stamp its own local data-theme
- * per fixed "tone", intentionally independent of the toggle; the toggle
- * now drives the whole site instead, see memory project-global-toggle-
- * everything). Custom properties inherit normally, so :root's light
- * values are the default and [data-theme="dark"] overrides them
- * site-wide the moment the toggle flips.
+ * Color tokens, resolved via CSS custom properties. The site is dark-only
+ * (no toggle, no data-theme attribute) so these are a single fixed set of
+ * values rather than a light/dark pair.
  */
 @layer base {
-  :root,
-  [data-theme="light"] {
-    --fg: var(--color-purple-primary);
-    --fg-muted: color-mix(in srgb, var(--color-purple-primary) 70%, transparent);
-    --eyebrow-fg: color-mix(in srgb, var(--color-purple-primary) 70%, transparent);
-    --ghost-hover: var(--color-purple-primary);
-    --card-bg: var(--color-white-soft);
-    --card-border: color-mix(in srgb, var(--color-purple-primary) 12%, transparent);
-    --divider: color-mix(in srgb, var(--color-purple-primary) 10%, transparent);
-    --pin-color: var(--color-purple-primary);
-    --headline-fill: linear-gradient(180deg, var(--color-purple-primary), var(--color-purple-primary));
-    --headline-shadow: 0 2px 18px rgba(56, 32, 111, 0.18);
-    --headline-glow-opacity: 0;
-
-    /* Section tone="feature" background: a soft, bright gradient band
-       for emphasis in day mode (hero, gallery, pricing, dramatic CTAs). */
-    --feature-bg-from: var(--color-lavender-soft);
-    --feature-bg-to: var(--color-white-soft);
-    --feature-dot: var(--color-dot);
-
-    /* GlowOrb colors: softer, pastel versions in day mode so the neon
-       palette doesn't clash with the cream background. */
-    --glow-purple: rgba(184, 168, 255, 0.35);
-    --glow-pink: rgba(233, 168, 255, 0.28);
-    --glow-blue: rgba(150, 210, 255, 0.22);
-    --glow-lime: rgba(210, 230, 90, 0.28);
-  }
-
-  [data-theme="dark"] {
+  :root {
     --fg: var(--color-white-soft);
     --fg-muted: color-mix(in srgb, var(--color-white-soft) 70%, transparent);
     --eyebrow-fg: var(--color-lime);
@@ -84,12 +45,10 @@
     --divider: color-mix(in srgb, white 10%, transparent);
     --pin-color: var(--color-lime);
     --headline-fill: linear-gradient(180deg, var(--color-white-soft) 0%, var(--color-lavender) 100%);
-    --headline-shadow: none;
-    --headline-glow-opacity: 1;
 
-    --feature-bg-from: var(--color-navy-dark);
-    --feature-bg-to: var(--color-dark-gradient);
-    --feature-dot: rgba(143, 92, 255, 0.18);
+    /* Section tone="emphasis" background: a soft gradient band layered
+       over the page wash for hero/gallery/pricing/dramatic CTAs. */
+    --emphasis-gradient-from: color-mix(in srgb, var(--color-dark-gradient) 70%, transparent);
 
     --glow-purple: rgba(143, 92, 255, 0.35);
     --glow-pink: rgba(224, 77, 255, 0.3);
@@ -119,18 +78,13 @@
   }
 
   body {
-    background-color: var(--color-paper-dotted);
-    color: var(--color-purple-primary);
-    background-image: radial-gradient(var(--color-dot) 1.2px, transparent 1.2px);
-    background-size: 20px 20px;
-    transition: background-color 0.3s var(--ease-snap), color 0.3s var(--ease-snap);
-  }
-
-  [data-theme="dark"] body {
     background-color: var(--color-navy-dark);
     color: var(--color-white-soft);
-    background-image: radial-gradient(rgba(143, 92, 255, 0.18) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-image:
+      radial-gradient(ellipse 80% 55% at 15% -10%, color-mix(in srgb, var(--color-purple-primary) 55%, transparent) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 90% 15%, color-mix(in srgb, var(--color-dark-gradient) 65%, transparent) 0%, transparent 55%),
+      radial-gradient(ellipse 75% 55% at 50% 100%, color-mix(in srgb, var(--color-purple-primary) 45%, transparent) 0%, transparent 60%);
+    background-attachment: fixed;
   }
 
   ::selection {
@@ -154,41 +108,15 @@
     white-space: nowrap;
   }
 
-  /* Flat lime highlight block behind a word (the brand "signature"). */
-  .hl-lime {
-    background: var(--color-lime);
-    color: var(--color-purple-primary);
-    padding: 0 0.2em;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-  }
-
-  /* Neon gradient text, dark mode only accent. */
-  .hl-neon {
-    background: linear-gradient(90deg, var(--color-electric-pink), var(--color-neon-purple));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
   /*
-   * Highlight: the "block + pin" editorial highlight (see Highlight.astro).
-   *
-   * The block used to be a separate absolutely-positioned layer sized off
-   * .highlight's own box. That broke on any highlighted phrase long enough
-   * to wrap across a line (e.g. "Build an email list you actually own."):
-   * an absolutely-positioned child only covers ONE box, but wrapped inline
-   * content generates one box PER LINE, so the block only covered the
-   * first fragment and the rest of the phrase rendered off the lime block
-   * entirely (purple text on the plain background, unreadable).
-   *
-   * Fixed by putting the background directly on .highlight-text itself as
-   * a `background-size` reveal (0% to 100% width, not scaleX, so the text
-   * glyphs never get stretched) combined with `box-decoration-break:
-   * clone`, which is exactly the CSS mechanism designed for "a background
-   * that must render correctly per wrapped line": each line fragment gets
-   * its own cloned background box automatically. No absolutely-positioned
-   * block element needed at all any more.
+   * Highlight: the accent phrase inside a headline (see Highlight.astro).
+   * Default ("gradient") clips a purple-to-lavender gradient to the text
+   * itself via background-clip: text, rather than sitting behind it as a
+   * block. `box-decoration-break: clone` still matters here: it makes any
+   * phrase long enough to wrap across a line (e.g. "Build an email list
+   * you actually own.") get its own complete gradient per line fragment,
+   * instead of one gradient stretched (and mostly hidden) across the
+   * whole multi-line bounding box.
    */
   .highlight {
     position: relative;
@@ -198,28 +126,25 @@
     position: relative;
     display: inline;
     line-height: 1.3;
-    padding: 0.05em 0.15em;
-    color: var(--color-purple-primary);
-    /* -webkit-text-fill-color inherits in WebKit/Chrome and wins over
-       `color` when both are set. .headline-text sets it to transparent
-       for the gradient-clip effect; without resetting it here too, this
-       span would inherit that transparent fill and render invisible even
-       though its own `color` is correctly purple. */
-    -webkit-text-fill-color: var(--color-purple-primary);
-    background-image: linear-gradient(var(--color-lime), var(--color-lime));
-    background-repeat: no-repeat;
-    background-size: 0% 100%;
-    background-position: left center;
-    transition: background-size 0.5s ease-out;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(90deg, var(--color-neon-purple), var(--color-lavender));
+    background-clip: text;
+    -webkit-background-clip: text;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-snap);
   }
 
   .highlight.in-view .highlight-text {
-    background-size: 100% 100%;
+    opacity: 1;
   }
 
   .highlight-lavender .highlight-text {
+    padding: 0.05em 0.15em;
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
     /* Not `inherit`: that would chain through .highlight's own inherited
        value from .headline-text, which is transparent (the gradient-clip
        fill), making this invisible too. Reference --fg directly instead,
@@ -287,12 +212,9 @@
   }
 
   /*
-   * Headline: tone-aware heading text treatment (see Headline.astro).
-   * Uses the same nearest-wins custom property technique as --fg (never
-   * `[data-theme="dark"] .headline-text`, that reintroduces the "any dark
-   * ancestor" bug documented in memory project-theme-architecture-fix).
-   * --headline-fill is a flat repeated-color gradient in light mode so the
-   * same background-clip mechanism works in both modes without branching.
+   * Headline: the heading text treatment (see Headline.astro). Reads
+   * --headline-fill (a white-to-lavender gradient, see :root above)
+   * rather than a literal color, so this rule never needs to branch.
    */
   .headline-text {
     position: relative;
@@ -301,7 +223,6 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    text-shadow: var(--headline-shadow);
   }
 
   .headline-glow {
@@ -311,7 +232,6 @@
     border-radius: 999px;
     filter: blur(40px);
     background: radial-gradient(ellipse at center, rgba(143, 92, 255, 0.2) 0%, transparent 70%);
-    opacity: var(--headline-glow-opacity);
   }
 
   .headline-word {

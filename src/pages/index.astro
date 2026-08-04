@@ -13,6 +13,9 @@ import Video3Moment from "../components/sections/Video3Moment.astro";
 import Pricing from "../components/sections/Pricing.astro";
 import LimitedSpots from "../components/sections/LimitedSpots.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
+import { homeEn } from "../i18n/content/home.en";
+
+const copy = homeEn;
 ---
 
 <Layout
@@ -21,17 +24,17 @@ import FinalCTA from "../components/sections/FinalCTA.astro";
 >
   <Navbar active="home" />
   <main>
-    <HomeHero />
-    <PainSection />
-    <ShiftSection />
-    <AIEmployeeGallery />
-    <ProductDemosPreview />
-    <HowItWorks />
-    <WhySwitching />
-    <Video3Moment />
-    <Pricing />
-    <LimitedSpots />
-    <FinalCTA />
+    <HomeHero copy={copy.hero} />
+    <PainSection copy={copy.pain} />
+    <ShiftSection copy={copy.shift} />
+    <AIEmployeeGallery copy={copy.gallery} />
+    <ProductDemosPreview copy={copy.demos} />
+    <HowItWorks copy={copy.howItWorks} />
+    <WhySwitching copy={copy.whySwitching} />
+    <Video3Moment copy={copy.video3} />
+    <Pricing copy={copy.pricing} />
+    <LimitedSpots copy={copy.limitedSpots} />
+    <FinalCTA copy={copy.finalCta} />
   </main>
   <Footer />
 </Layout>

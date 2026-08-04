@@ -3,28 +3,25 @@ import Section from "../layout/Section.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import Highlight from "../ui/Highlight.astro";
 import FadeIn from "../animations/FadeIn.tsx";
+import type { HomeCopy } from "../../i18n/content/types";
 
-const tasks = [
-  "Writing content",
-  "Researching competitors",
-  "Following up with leads",
-  "Replying to emails",
-  "Organizing projects",
-  "Creating proposals",
-  "Managing clients",
-];
+interface Props {
+  copy: HomeCopy["pain"];
+}
+
+const { copy } = Astro.props;
 ---
 
-<Section tone="paper">
-  <SectionHeading eyebrow="The cost of staying busy" headingLead="Your business is growing.">
-    <Highlight pin="top-right">Your time isn't.</Highlight>
+<Section tone="base">
+  <SectionHeading eyebrow={copy.eyebrow} headingLead={copy.headlineLead}>
+    <Highlight pin="top-right">{copy.highlight}</Highlight>
     <p slot="lead">
-      You're spending hours every week on work that shouldn't need your attention.
+      {copy.leadText}
     </p>
   </SectionHeading>
 
   <div class="mt-10 flex flex-wrap gap-3">
-    {tasks.map((task, i) => (
+    {copy.tasks.map((task, i) => (
       <FadeIn client:visible delay={i * 60}>
         <span class="inline-flex items-center rounded-full border border-[var(--fg)]/15 bg-[var(--card-bg)] px-5 py-2.5 font-body text-sm font-medium text-[var(--fg)]/80 shadow-sm">
           {task}
@@ -34,6 +31,6 @@ const tasks = [
   </div>
 
   <p class="mt-12 font-display text-2xl font-extrabold text-[var(--fg)] sm:text-3xl">
-    None of these tasks grow your business.
+    {copy.closingLine}
   </p>
 </Section>

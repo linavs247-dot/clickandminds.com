@@ -12,12 +12,23 @@ export default defineConfig({
   // path is needed even though this deploys via a User/Org Pages repo.
   site: 'https://clickandminds.com',
 
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es'],
+    // English stays unprefixed at "/", Spanish lives under "/es/".
+    routing: { prefixDefaultLocale: false },
+  },
+
   integrations: [
     react(),
     sitemap({
       // /styleguide is an internal design-system reference page, not a
       // real marketing page — keep it out of search engines' sitemap.
       filter: (page) => !page.includes('/styleguide'),
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en', es: 'es' },
+      },
     }),
   ],
 

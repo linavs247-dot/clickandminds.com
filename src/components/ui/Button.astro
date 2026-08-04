@@ -27,15 +27,15 @@ const sizes = {
 
 const variants = {
   lime:
-    "bg-lime text-purple-primary shadow-[0_4px_0_rgba(42,23,85,0.4)] " +
-    "hover:shadow-[0_6px_20px_-2px_rgba(239,255,115,0.6)] " +
-    "dark:shadow-[0_0_25px_-2px_rgba(239,255,115,0.5)] dark:hover:shadow-[0_0_35px_-2px_rgba(239,255,115,0.75)]",
+    "bg-lime/30 text-purple-primary backdrop-blur-md border border-lime/60 " +
+    "shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_0_25px_-2px_rgba(239,255,115,0.5)] " +
+    "hover:bg-lime/40 hover:brightness-110 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_0_35px_-2px_rgba(239,255,115,0.75)]",
   solid:
-    "bg-purple-primary text-white-soft shadow-[0_4px_0_var(--color-purple-deep)] " +
-    "dark:bg-neon-purple dark:shadow-[0_0_25px_-2px_rgba(143,92,255,0.6)] dark:hover:shadow-[0_0_35px_-2px_rgba(143,92,255,0.8)]",
+    "bg-neon-purple text-white-soft shadow-[0_0_25px_-2px_rgba(143,92,255,0.6)] " +
+    "hover:shadow-[0_0_35px_-2px_rgba(143,92,255,0.8)]",
   ghost:
-    "bg-transparent text-[var(--fg)] border border-[var(--fg)]/40 " +
-    "hover:border-[var(--ghost-hover)] hover:bg-[var(--ghost-hover)]/10",
+    "bg-navy-dark/30 text-[var(--fg)] backdrop-blur-md border border-[var(--fg)]/20 " +
+    "hover:border-[var(--ghost-hover)]/60 hover:bg-navy-dark/50",
 };
 
 const classes = [base, sizes[size], variants[variant], className].join(" ");

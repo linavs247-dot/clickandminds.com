@@ -35,11 +35,14 @@ const pageTitle = `${title} · Click & Minds`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={Astro.currentLocale ?? "en"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
@@ -59,28 +62,6 @@ const pageTitle = `${title} · Click & Minds`;
     <meta name="twitter:image" content={socialImageURL} />
 
     <ClientRouter />
-
-    <script is:inline>
-      // Applied before paint to avoid a flash of the wrong theme.
-      // Persisted via a cookie (not localStorage) per brand spec.
-      //
-      // Also re-applied on `astro:after-swap`: the View Transitions router
-      // fetches the destination page's raw HTML (scripts never execute in
-      // that offscreen parse) and syncs the live <html> element's
-      // attributes to match it, which wipes data-theme back to unset right
-      // before the swapped content paints. Re-running this function on
-      // that event (registered once here, since this script itself only
-      // runs once per full load) restores it in time to avoid a flash.
-      (function () {
-        function applyTheme() {
-          var match = document.cookie.match(/(?:^|; )theme=(dark|light)/);
-          var theme = match ? match[1] : "dark";
-          document.documentElement.setAttribute("data-theme", theme);
-        }
-        applyTheme();
-        document.addEventListener("astro:after-swap", applyTheme);
-      })();
-    </script>
   </head>
   <body class="font-body">
     <slot />

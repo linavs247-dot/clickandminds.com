@@ -4,25 +4,24 @@ import SectionHeading from "../ui/SectionHeading.astro";
 import Highlight from "../ui/Highlight.astro";
 import Counter from "../ui/Counter.tsx";
 import FadeIn from "../animations/FadeIn.tsx";
+import type { HomeCopy } from "../../i18n/content/types";
 
-const checklist = [
-  "Save 10 to 40 hours every month",
-  "Eliminate repetitive work",
-  "Scale without hiring more people",
-  "Stay consistent",
-  "Focus on high impact work",
-];
+interface Props {
+  copy: HomeCopy["whySwitching"];
+}
+
+const { copy } = Astro.props;
 ---
 
-<Section tone="paper">
+<Section tone="base">
   <div class="grid gap-14 lg:grid-cols-2">
     <div>
-      <SectionHeading eyebrow="Why businesses are switching" headingLead="Built for how you">
-        <Highlight pin="top-right">actually work.</Highlight>
+      <SectionHeading eyebrow={copy.eyebrow} headingLead={copy.headlineLead}>
+        <Highlight pin="top-right">{copy.highlight}</Highlight>
       </SectionHeading>
 
       <ul class="mt-8 space-y-4">
-        {checklist.map((item) => (
+        {copy.checklist.map((item) => (
           <li class="flex items-start gap-3 text-base text-[var(--fg)]/85">
             <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-lime text-xs font-bold text-[var(--fg)]">
               ✓
@@ -40,7 +39,7 @@ const checklist = [
             <Counter client:visible from={0} to={40} suffix="h" />
           </p>
           <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
-            Saved monthly
+            {copy.stats.savedMonthlyLabel}
           </p>
         </div>
       </FadeIn>
@@ -50,23 +49,23 @@ const checklist = [
             <Counter client:visible from={0} to={100} suffix="%" />
           </p>
           <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
-            System ownership
+            {copy.stats.systemOwnershipLabel}
           </p>
         </div>
       </FadeIn>
       <FadeIn client:visible delay={200}>
         <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-sm">
-          <p class="font-display text-2xl font-extrabold text-[var(--fg)]">4h &rarr; 15min</p>
+          <p class="font-display text-2xl font-extrabold text-[var(--fg)]">{copy.stats.taskTimeValue}</p>
           <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
-            Typical task time
+            {copy.stats.taskTimeLabel}
           </p>
         </div>
       </FadeIn>
       <FadeIn client:visible delay={300}>
         <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-sm">
-          <p class="font-display text-2xl font-extrabold text-[var(--fg)]">1:1</p>
+          <p class="font-display text-2xl font-extrabold text-[var(--fg)]">{copy.stats.directBuildValue}</p>
           <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
-            Direct build with the operator
+            {copy.stats.directBuildLabel}
           </p>
         </div>
       </FadeIn>

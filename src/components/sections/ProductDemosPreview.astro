@@ -6,47 +6,25 @@ import Headline from "../ui/Headline.astro";
 import GlowOrb from "../animations/GlowOrb.astro";
 import AgentShowcaseCarousel from "../demos/AgentShowcaseCarousel.tsx";
 import FadeIn from "../animations/FadeIn.tsx";
+import type { HomeCopy } from "../../i18n/content/types";
 
-const demos = [
-  {
-    tag: "// content_writer.agent",
-    name: "Content Writer Agent",
-    description: "Chat in a topic, get a polished draft out, in your voice.",
-  },
-  {
-    tag: "// content_dashboard.tool",
-    name: "Content Dashboard",
-    description: "Your entire content pipeline, tracked in one view.",
-  },
-  {
-    tag: "// proposal_generator.tool",
-    name: "Proposal Generator",
-    description: "Call notes become a client ready proposal in minutes.",
-  },
-  {
-    tag: "// lead_generator.agent",
-    name: "Lead Generator",
-    description: "A live table of leads, scored and ready for follow up.",
-  },
-  {
-    tag: "// reports.dashboard",
-    name: "Special Reports & Dashboards",
-    description: "Performance data that tells you what to do next.",
-  },
-];
+interface Props {
+  copy: HomeCopy["demos"];
+}
+
+const { copy } = Astro.props;
 ---
 
-<Section tone="paper">
-  <SectionHeading eyebrow="See it in action" headingLead="A closer look at">
-    <Highlight pin="bottom-left">what we build.</Highlight>
+<Section tone="base">
+  <SectionHeading eyebrow={copy.eyebrow} headingLead={copy.headlineLead}>
+    <Highlight pin="bottom-left">{copy.highlight}</Highlight>
     <p slot="lead">
-      Real product concepts we design for clients, shown here so you can see the
-      experience before we build yours.
+      {copy.leadText}
     </p>
   </SectionHeading>
 
   <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-    {demos.map((demo, i) => (
+    {copy.items.map((demo, i) => (
       <FadeIn client:visible delay={i * 80} className="h-full">
         <div class="h-full rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1">
           <div class="h-1.5 w-10 rounded-full bg-lime"></div>
@@ -60,16 +38,12 @@ const demos = [
     ))}
   </div>
 
-  <div class="relative mt-16 overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--feature-bg-from)] to-[var(--feature-bg-to)] p-10 sm:p-14">
+  <div class="relative mt-16 overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--emphasis-gradient-from)] to-transparent p-10 sm:p-14">
     <GlowOrb color="purple" size={420} class="-top-20 -right-20" />
-    <div
-      class="pointer-events-none absolute inset-0 [background-image:radial-gradient(var(--feature-dot)_1.2px,transparent_1.2px)] [background-size:20px_20px]"
-    >
-    </div>
     <div class="relative z-10 text-center">
-      <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--eyebrow-fg)]">One more look</p>
-      <Headline as="h3" lead="This is what it looks like" class="mx-auto mt-4 max-w-lg text-3xl font-display font-extrabold leading-[1.15] sm:text-4xl">
-        <Highlight pin="top-right">running.</Highlight>
+      <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--eyebrow-fg)]">{copy.carouselEyebrow}</p>
+      <Headline as="h3" lead={copy.carouselHeadlineLead} class="mx-auto mt-4 max-w-lg text-3xl font-display font-extrabold leading-[1.15] sm:text-4xl">
+        <Highlight pin="top-right">{copy.carouselHighlight}</Highlight>
       </Headline>
       <AgentShowcaseCarousel client:visible />
     </div>

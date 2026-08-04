@@ -1,35 +1,49 @@
 ---
-import ThemeToggle from "../ui/ThemeToggle.tsx";
+import { Image } from "astro:assets";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import Button from "../ui/Button.astro";
+import LanguageSwitcher from "../ui/LanguageSwitcher.astro";
 import { GOOGLE_FORM_URL } from "../../lib/constants";
+import { defaultLocale, useTranslations, type Locale } from "../../i18n/ui";
+import logoHorizontal from "../../assets/logo-horizontal.png";
 
 interface Props {
-  active?: "home";
+  active?: "home" | "websites" | "portfolio";
 }
 
 const { active = "home" } = Astro.props;
+const locale = (Astro.currentLocale as Locale | undefined) ?? defaultLocale;
+const t = useTranslations(locale);
+
+const links = [
+  { key: "home" as const, label: t.nav.aiAgents, href: getRelativeLocaleUrl(locale, "/") },
+  { key: "websites" as const, label: t.nav.websites, href: getRelativeLocaleUrl(locale, "/websites") },
+  { key: "portfolio" as const, label: t.nav.portfolio, href: getRelativeLocaleUrl(locale, "/portfolio") },
+];
 ---
 
 <header id="site-nav" class="fixed inset-x-0 top-0 z-50">
-  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-    <a href="/" class="font-display text-lg font-extrabold tracking-tight" style="color: var(--fg)">
-      Click &amp; Minds<span class="text-electric-pink">.</span>
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href={getRelativeLocaleUrl(locale, "/")} class="shrink-0">
+      <Image src={logoHorizontal} alt="Click & Minds" width={172} height={40} class="h-9 w-auto sm:h-10" />
     </a>
 
-    <div class="hidden items-center gap-8 font-body text-sm font-medium md:flex" style="color: var(--fg)">
-      <a
-        href="/"
-        class="opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
-        aria-current={active === "home" ? "page" : undefined}
-      >
-        AI Agents
-      </a>
+    <div class="hidden items-center gap-8 font-body text-sm font-medium text-[var(--fg)] md:flex">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class="opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
+          aria-current={active === link.key ? "page" : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
     </div>
 
     <div class="flex items-center gap-3 sm:gap-4">
-      <div class="hidden items-center gap-3 sm:gap-4 md:flex">
-        <ThemeToggle client:load />
-        <Button href={GOOGLE_FORM_URL} external variant="lime" size="md">Book a Call</Button>
+      <div class="hidden items-center gap-4 sm:gap-5 md:flex">
+        <LanguageSwitcher />
+        <Button href={GOOGLE_FORM_URL} external variant="lime" size="md">{t.nav.bookACall}</Button>
       </div>
 
       <button
@@ -38,7 +52,7 @@ const { active = "home" } = Astro.props;
         class="hamburger md:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
-        aria-label="Open menu"
+        aria-label={t.nav.openMenu}
       >
         <span class="hamburger-bar" aria-hidden="true"></span>
         <span class="hamburger-bar" aria-hidden="true"></span>
@@ -49,23 +63,24 @@ const { active = "home" } = Astro.props;
 
   <div id="mobile-menu" class="mobile-menu md:hidden" aria-hidden="true" inert>
     <nav class="mobile-menu-links" aria-label="Mobile">
-      <a
-        href="/"
-        class="font-display text-2xl font-semibold opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
-        style="color: var(--fg)"
-        aria-current={active === "home" ? "page" : undefined}
-      >
-        AI Agents
-      </a>
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class="font-display text-2xl font-semibold text-[var(--fg)] opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
+          aria-current={active === link.key ? "page" : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
 
     <div class="mobile-menu-footer">
       <div class="flex items-center justify-between">
-        <span class="font-body text-sm font-medium" style="color: var(--fg-muted)">Theme</span>
-        <ThemeToggle client:load />
+        <span class="font-body text-sm font-medium" style="color: var(--fg-muted)">{t.nav.language}</span>
+        <LanguageSwitcher />
       </div>
       <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="w-full justify-center">
-        Book a Call
+        {t.nav.bookACall}
       </Button>
     </div>
   </div>
@@ -73,22 +88,28 @@ const { active = "home" } = Astro.props;
 
 <style>
   /*
-   * The transparent (top-of-page) state uses --fg directly, the same
-   * global-toggle-driven color every other component reads, since the
-   * hero underneath it now also follows the toggle (see Section.astro).
-   * Only the SCROLLED (opaque) state needs its own rule here, to swap
-   * background + border together with text color as one unit.
+   * Always-on translucent glass, so the bar reads clearly over any hero
+   * content from the very top of the page (not just once scrolled). The
+   * base tint is dark-deep (not flat purple-primary): purple-primary is
+   * close enough in lightness to the logo wordmark's dark-purple half
+   * that the two collapse into each other at low opacity, making "CLICK"
+   * unreadable. dark-deep keeps a purple undertone while staying dark
+   * enough for the logo (and body copy) to read clearly against it; the
+   * radial glow layered on top supplies the "tinted with brand purple"
+   * feel without flattening the whole bar to one mid-purple. `.nav-
+   * scrolled` only adds a further intensity bump plus the border, as a
+   * subtle depth cue once scrolling starts.
    */
   #site-nav {
+    background-color: color-mix(in srgb, var(--color-dark-deep) 55%, transparent);
+    background-image: radial-gradient(ellipse 120% 100% at 50% -40%, color-mix(in srgb, var(--color-purple-primary) 40%, transparent) 0%, transparent 70%);
+    backdrop-filter: blur(14px);
     transition: background-color 0.3s var(--ease-snap), border-color 0.3s var(--ease-snap);
   }
   #site-nav.nav-scrolled {
-    background-color: color-mix(in srgb, var(--color-white-soft) 85%, transparent);
+    background-color: color-mix(in srgb, var(--color-dark-deep) 82%, transparent);
     border-bottom: 1px solid var(--divider);
-    backdrop-filter: blur(14px);
-  }
-  :global([data-theme="dark"]) #site-nav.nav-scrolled {
-    background-color: color-mix(in srgb, var(--color-navy-dark) 85%, transparent);
+    backdrop-filter: blur(18px);
   }
 
   /* Hamburger: three bars that morph into an X while the drawer is open. */
@@ -131,15 +152,12 @@ const { active = "home" } = Astro.props;
     flex-direction: column;
     justify-content: space-between;
     padding: 7rem 1.5rem 2.5rem;
-    background-color: color-mix(in srgb, var(--color-white-soft) 97%, transparent);
+    background-color: color-mix(in srgb, var(--color-navy-dark) 97%, transparent);
     backdrop-filter: blur(20px);
     opacity: 0;
     transform: translateY(-16px);
     pointer-events: none;
     transition: opacity 0.3s var(--ease-snap), transform 0.35s var(--ease-snap);
-  }
-  :global([data-theme="dark"]) .mobile-menu {
-    background-color: color-mix(in srgb, var(--color-navy-dark) 97%, transparent);
   }
   .mobile-menu.is-open {
     opacity: 1;
