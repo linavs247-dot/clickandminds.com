@@ -35,7 +35,7 @@ const { copy } = Astro.props;
               />
             )}
             <div
-              class={`flex h-full flex-col rounded-3xl border p-8 backdrop-blur-sm transition-all duration-300 ${
+              class={`flex h-full flex-col rounded-3xl border p-8 shadow-[var(--card-shadow)] backdrop-blur-sm transition-all duration-300 ${
                 isFeatured
                   ? "border-neon-purple/40 bg-[var(--card-bg)] group-hover:-translate-y-2 group-hover:border-neon-purple/80"
                   : "border-[var(--card-border)] bg-[var(--card-bg)] group-hover:-translate-y-1 group-hover:border-neon-purple/30"

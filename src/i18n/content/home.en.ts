@@ -8,6 +8,7 @@ export const homeEn: HomeCopy = {
     body: "Stop hiring for repetitive work. Start building a business that runs itself. We design custom AI agents that research, write, organize, sell, and support your business twenty four hours a day. Built for creators, founders, freelancers, and business owners.",
     ctaPrimary: "Book a Strategy Call",
     ctaSecondary: "See What We Build",
+    socialProof: "Trusted by founders and creators",
   },
   pain: {
     tasks: [

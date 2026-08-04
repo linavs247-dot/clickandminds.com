@@ -34,7 +34,7 @@ const { copy } = Astro.props;
 
     <div class="grid grid-cols-2 gap-5">
       <FadeIn client:visible delay={0}>
-        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-sm">
+        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-[var(--card-shadow)]">
           <p class="font-display text-4xl font-extrabold text-[var(--fg)]">
             <Counter client:visible from={0} to={40} suffix="h" />
           </p>
@@ -44,7 +44,7 @@ const { copy } = Astro.props;
         </div>
       </FadeIn>
       <FadeIn client:visible delay={100}>
-        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-sm">
+        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-[var(--card-shadow)]">
           <p class="font-display text-4xl font-extrabold text-[var(--fg)]">
             <Counter client:visible from={0} to={100} suffix="%" />
           </p>
@@ -54,7 +54,7 @@ const { copy } = Astro.props;
         </div>
       </FadeIn>
       <FadeIn client:visible delay={200}>
-        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-sm">
+        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-[var(--card-shadow)]">
           <p class="font-display text-2xl font-extrabold text-[var(--fg)]">{copy.stats.taskTimeValue}</p>
           <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
             {copy.stats.taskTimeLabel}
@@ -62,7 +62,7 @@ const { copy } = Astro.props;
         </div>
       </FadeIn>
       <FadeIn client:visible delay={300}>
-        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-sm">
+        <div class="rounded-2xl border border-[var(--fg)]/10 bg-[var(--card-bg)] p-6 text-center shadow-[var(--card-shadow)]">
           <p class="font-display text-2xl font-extrabold text-[var(--fg)]">{copy.stats.directBuildValue}</p>
           <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--fg)]/50">
             {copy.stats.directBuildLabel}

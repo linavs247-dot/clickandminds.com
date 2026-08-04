@@ -101,6 +101,7 @@ export interface HomeCopy {
     body: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    socialProof: string;
   };
   pain: {
     tasks: string[];

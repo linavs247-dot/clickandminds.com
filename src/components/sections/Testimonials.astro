@@ -21,7 +21,7 @@ const { copy } = Astro.props;
       <div class="testimonial-slider-track flex items-stretch transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
         {copy.items.map((testimonial) => (
           <div class="testimonial-slide w-full shrink-0 px-2">
-            <div class="mx-auto flex h-full max-w-xl flex-col items-center rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] px-8 py-12 text-center backdrop-blur-sm sm:px-14 sm:py-14">
+            <div class="mx-auto flex h-full max-w-xl flex-col items-center rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] px-8 py-12 text-center shadow-[var(--card-shadow)] backdrop-blur-sm sm:px-14 sm:py-14">
               <div class="text-lime" aria-hidden="true">★★★★★</div>
               <p class="mt-6 max-w-md text-base leading-relaxed text-[var(--fg)]/85">
                 &ldquo;{testimonial.quote}&rdquo;

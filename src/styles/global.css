@@ -41,7 +41,11 @@
     --eyebrow-fg: var(--color-lime);
     --ghost-hover: var(--color-lime);
     --card-bg: color-mix(in srgb, white 6%, transparent);
-    --card-border: color-mix(in srgb, var(--color-neon-purple) 25%, transparent);
+    /* Depth comes from --card-shadow below, not a visible border: kept
+       to a near-invisible 1px white hairline (5-8% opacity) rather than
+       the previous 25%-opacity purple outline. */
+    --card-border: color-mix(in srgb, white 7%, transparent);
+    --card-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
     --divider: color-mix(in srgb, white 10%, transparent);
     --pin-color: var(--color-lime);
     --headline-fill: linear-gradient(180deg, var(--color-white-soft) 0%, var(--color-lavender) 100%);

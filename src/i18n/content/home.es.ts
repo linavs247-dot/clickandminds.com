@@ -8,6 +8,7 @@ export const homeEs: HomeCopy = {
     body: "Deja de contratar para tareas repetitivas. Empieza a construir un negocio que funcione solo. Diseñamos agentes de IA personalizados que investigan, escriben, organizan, venden y dan soporte a tu negocio las veinticuatro horas del día. Hecho para creadores, fundadores, freelancers y dueños de negocio.",
     ctaPrimary: "Agenda una Llamada de Estrategia",
     ctaSecondary: "Ve Lo Que Construimos",
+    socialProof: "La confianza de fundadores y creadores",
   },
   pain: {
     tasks: [
