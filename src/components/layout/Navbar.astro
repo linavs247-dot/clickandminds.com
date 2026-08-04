@@ -22,6 +22,7 @@ const links = [
 ];
 ---
 
+<>
 <header id="site-nav" class="fixed inset-x-0 top-0 z-50">
   <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
     <a href={getRelativeLocaleUrl(locale, "/")} class="shrink-0">
@@ -60,31 +61,32 @@ const links = [
       </button>
     </div>
   </nav>
-
-  <div id="mobile-menu" class="mobile-menu md:hidden" aria-hidden="true" inert>
-    <nav class="mobile-menu-links" aria-label="Mobile">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class="font-display text-2xl font-semibold text-[var(--fg)] opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
-          aria-current={active === link.key ? "page" : undefined}
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
-
-    <div class="mobile-menu-footer">
-      <div class="flex items-center justify-between">
-        <span class="font-body text-sm font-medium" style="color: var(--fg-muted)">{t.nav.language}</span>
-        <LanguageSwitcher />
-      </div>
-      <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="w-full justify-center">
-        {t.nav.bookACall}
-      </Button>
-    </div>
-  </div>
 </header>
+
+<div id="mobile-menu" class="mobile-menu md:hidden" aria-hidden="true" inert>
+  <nav class="mobile-menu-links" aria-label="Mobile">
+    {links.map((link) => (
+      <a
+        href={link.href}
+        class="font-display text-2xl font-semibold text-[var(--fg)] opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
+        aria-current={active === link.key ? "page" : undefined}
+      >
+        {link.label}
+      </a>
+    ))}
+  </nav>
+
+  <div class="mobile-menu-footer">
+    <div class="flex items-center justify-between">
+      <span class="font-body text-sm font-medium" style="color: var(--fg-muted)">{t.nav.language}</span>
+      <LanguageSwitcher />
+    </div>
+    <Button href={GOOGLE_FORM_URL} external variant="lime" size="lg" class="w-full justify-center">
+      {t.nav.bookACall}
+    </Button>
+  </div>
+</div>
+</>
 
 <style>
   /*

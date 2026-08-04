@@ -17,14 +17,14 @@ interface Props {
   description?: string;
   /** Path under /public for the social share image, 1200x630. */
   image?: string;
-  /** Set true for internal-only pages (e.g. /styleguide) that shouldn't
-   * be indexed even if linked to from outside the site. */
+  /** Set true for internal-only pages that shouldn't be indexed even if
+   * linked to from outside the site. */
   noindex?: boolean;
 }
 
 const {
   title,
-  description = "Click & Minds designs custom AI employees and done for you LinkedIn content systems for founders, creators, and business owners.",
+  description = "Click & Minds designs custom AI employees and builds websites, sales funnels, and brand identities for founders, creators, and business owners.",
   image = "/brand/og-image.png",
   noindex = false,
 } = Astro.props;
@@ -71,7 +71,7 @@ const pageTitle = `${title} · Click & Minds`;
     // Single shared IntersectionObserver driving every Highlight and
     // Headline reveal on the page (both mark themselves with
     // data-reveal). Deliberately not a per-instance React island: these
-    // are pure CSS transitions (see .highlight-block/.highlight-pin/
+    // are pure CSS transitions (see .highlight-text/.highlight-pin/
     // .headline-word in global.css), one shared observer is far cheaper
     // than hydrating a component per heading. prefers-reduced-motion is
     // already handled globally (transition-duration forced to ~0 in

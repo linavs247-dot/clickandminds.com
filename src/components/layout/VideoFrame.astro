@@ -64,7 +64,7 @@ const { src, poster, class: className = "", variant = "framed" } = Astro.props;
 
 <script>
   // Autoplay forces Chrome (and others) to start fetching a video the
-  // moment its `src` is set, ignoring `preload` hints entirely — so every
+  // moment its `src` is set, ignoring `preload` hints entirely, so every
   // VideoFrame on the page, including ones far below the fold (e.g. the
   // one in ShiftSection.astro), was competing for bandwidth with the hero
   // video on initial load. Deferring `src` until the frame is actually
