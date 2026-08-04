@@ -4,7 +4,7 @@ import Button from "../ui/Button.astro";
 import { GOOGLE_FORM_URL } from "../../lib/constants";
 
 interface Props {
-  active?: "home" | "linkedin";
+  active?: "home";
 }
 
 const { active = "home" } = Astro.props;
@@ -23,13 +23,6 @@ const { active = "home" } = Astro.props;
         aria-current={active === "home" ? "page" : undefined}
       >
         AI Agents
-      </a>
-      <a
-        href="/linkedin-studio"
-        class="opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
-        aria-current={active === "linkedin" ? "page" : undefined}
-      >
-        LinkedIn Studio
       </a>
     </div>
 
@@ -63,14 +56,6 @@ const { active = "home" } = Astro.props;
         aria-current={active === "home" ? "page" : undefined}
       >
         AI Agents
-      </a>
-      <a
-        href="/linkedin-studio"
-        class="font-display text-2xl font-semibold opacity-90 transition-opacity hover:opacity-100 aria-[current=page]:opacity-100 aria-[current=page]:underline aria-[current=page]:decoration-lime aria-[current=page]:underline-offset-4"
-        style="color: var(--fg)"
-        aria-current={active === "linkedin" ? "page" : undefined}
-      >
-        LinkedIn Studio
       </a>
     </nav>
 
