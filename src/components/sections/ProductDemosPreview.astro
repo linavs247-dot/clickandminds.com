@@ -39,21 +39,6 @@ const icons = ["writer", "dashboard", "proposal", "leads", "reports"] as const;
       </div>
     </div>
 
-    <button
-      type="button"
-      class="demo-slider-prev absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--fg)]/20 bg-[var(--card-bg)] text-[var(--fg)] backdrop-blur-sm transition-colors hover:border-lime hover:text-lime sm:-left-4"
-      aria-label="Previous slide"
-    >
-      &larr;
-    </button>
-    <button
-      type="button"
-      class="demo-slider-next absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--fg)]/20 bg-[var(--card-bg)] text-[var(--fg)] backdrop-blur-sm transition-colors hover:border-lime hover:text-lime sm:-right-4"
-      aria-label="Next slide"
-    >
-      &rarr;
-    </button>
-
     <div class="mt-8 flex items-center justify-center gap-2">
       {copy.items.map((_, i) => (
         <button
@@ -83,8 +68,6 @@ const icons = ["writer", "dashboard", "proposal", "leads", "reports"] as const;
       const track = slider.querySelector<HTMLElement>(".demo-slider-track");
       const slides = Array.from(slider.querySelectorAll<HTMLElement>(".demo-slide"));
       const dots = Array.from(slider.querySelectorAll<HTMLElement>(".demo-slider-dot"));
-      const prevBtn = slider.querySelector<HTMLButtonElement>(".demo-slider-prev");
-      const nextBtn = slider.querySelector<HTMLButtonElement>(".demo-slider-next");
       if (!track || slides.length === 0) return;
 
       let index = 0;
@@ -107,8 +90,6 @@ const icons = ["writer", "dashboard", "proposal", "leads", "reports"] as const;
         render();
       }
 
-      prevBtn?.addEventListener("click", () => goTo(index - 1));
-      nextBtn?.addEventListener("click", () => goTo(index + 1));
       dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
 
       render();

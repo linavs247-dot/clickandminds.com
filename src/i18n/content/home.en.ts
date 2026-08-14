@@ -205,7 +205,7 @@ export const homeEn: HomeCopy = {
       },
       {
         name: "Complete AI Systems",
-        price: "From $5,000",
+        price: "From $4,000",
         unit: "per system",
         description: "For businesses ready to automate multiple workflows with a full multi-agent system.",
         features: [

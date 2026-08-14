@@ -23,8 +23,8 @@ const links = [
 ---
 
 <>
-<header id="site-nav" class="fixed inset-x-0 top-0 z-50">
-  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+<header id="site-nav" class="fixed inset-x-4 top-4 z-50 mx-auto max-w-6xl rounded-full sm:inset-x-6 sm:top-6">
+  <nav class="flex items-center justify-between px-5 py-3 sm:px-6 sm:py-3.5">
     <a href={getRelativeLocaleUrl(locale, "/")} class="shrink-0">
       <Image src={logoHorizontal} alt="Click & Minds" width={172} height={40} class="h-9 w-auto sm:h-10" />
     </a>
@@ -103,14 +103,17 @@ const links = [
    * subtle depth cue once scrolling starts.
    */
   #site-nav {
+    overflow: hidden;
     background-color: color-mix(in srgb, var(--color-dark-deep) 55%, transparent);
     background-image: radial-gradient(ellipse 120% 100% at 50% -40%, color-mix(in srgb, var(--color-purple-primary) 40%, transparent) 0%, transparent 70%);
     backdrop-filter: blur(14px);
+    border: 1px solid transparent;
+    box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
     transition: background-color 0.3s var(--ease-snap), border-color 0.3s var(--ease-snap);
   }
   #site-nav.nav-scrolled {
     background-color: color-mix(in srgb, var(--color-dark-deep) 82%, transparent);
-    border-bottom: 1px solid var(--divider);
+    border-color: var(--divider);
     backdrop-filter: blur(18px);
   }
 

@@ -205,7 +205,7 @@ export const homeEs: HomeCopy = {
       },
       {
         name: "Sistemas de IA Completos",
-        price: "Desde $5,000",
+        price: "Desde $4,000",
         unit: "por sistema",
         description: "Para negocios listos para automatizar varios procesos con un sistema completo multiagente.",
         features: [
