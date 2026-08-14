@@ -30,7 +30,7 @@ const copy = websitesEn;
       <div class="relative mx-auto max-w-2xl">
         <Eyebrow class="justify-center">{copy.hero.eyebrow}</Eyebrow>
         <Headline as="h1" lead={copy.hero.headlineLead} class="mx-auto mt-5 text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl">
-          <Highlight pin="top-right">{copy.hero.highlight}</Highlight>
+          <Highlight>{copy.hero.highlight}</Highlight>
         </Headline>
         <p class="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-[var(--fg)]/75">
           {copy.hero.body}
@@ -51,7 +51,7 @@ const copy = websitesEn;
 
       <div class="relative mx-auto max-w-2xl">
         <Headline as="h2" lead={copy.finalCta.headlineLead} class="mx-auto text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
-          <Highlight pin="top-right">{copy.finalCta.highlight}</Highlight>
+          <Highlight>{copy.finalCta.highlight}</Highlight>
         </Headline>
         <p class="mx-auto mt-6 max-w-md text-lg text-[var(--fg)]/75">
           {copy.finalCta.body}

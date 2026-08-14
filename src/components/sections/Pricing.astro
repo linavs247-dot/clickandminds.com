@@ -19,7 +19,7 @@ const { copy } = Astro.props;
   <GlowOrb color="purple" size={460} class="-top-24 left-1/4" />
 
   <SectionHeading eyebrow={copy.eyebrow} align="center" class="mx-auto" headingLead={copy.headlineLead}>
-    <Highlight pin="bottom-left">{copy.highlight}</Highlight>
+    <Highlight>{copy.highlight}</Highlight>
   </SectionHeading>
 
   <div class="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-center">

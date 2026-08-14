@@ -24,7 +24,7 @@ const { copy } = Astro.props;
     <div class="lg:order-1">
       <Eyebrow>{copy.eyebrow}</Eyebrow>
       <Headline as="h2" lead={copy.headlineLead} class="mt-5 text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
-        <Highlight pin="bottom-left">{copy.highlight}</Highlight>
+        <Highlight>{copy.highlight}</Highlight>
       </Headline>
       <p class="mt-6 max-w-lg text-lg leading-relaxed text-[var(--fg-muted)]">
         {copy.body}

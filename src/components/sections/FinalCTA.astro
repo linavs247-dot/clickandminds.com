@@ -20,7 +20,7 @@ const { copy } = Astro.props;
 
   <div class="relative mx-auto max-w-2xl">
     <Headline as="h2" lead={copy.headlineLead} class="mx-auto text-4xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-5xl">
-      <Highlight pin="top-right">{copy.highlight}</Highlight>
+      <Highlight>{copy.highlight}</Highlight>
     </Headline>
     <p class="mx-auto mt-6 max-w-md text-lg text-[var(--fg)]/75">
       {copy.body}

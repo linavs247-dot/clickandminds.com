@@ -14,7 +14,7 @@ const { copy } = Astro.props;
 
 <Section tone="base">
   <SectionHeading eyebrow={copy.eyebrow} headingLead={copy.headlineLead}>
-    <Highlight pin="top-right">{copy.highlight}</Highlight>
+    <Highlight>{copy.highlight}</Highlight>
     <p slot="lead">
       {copy.leadText}
     </p>

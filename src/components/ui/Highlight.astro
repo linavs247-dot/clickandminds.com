@@ -1,23 +1,18 @@
 ---
 // The accent phrase inside a headline: a purple-gradient text-clip by
-// default, plus a decorative corner pin. Animates in via the shared
+// default. Animates in via the shared
 // [data-reveal] IntersectionObserver set up once in Layout.astro.
 interface Props {
   color?: "gradient" | "lavender";
-  pin?: "top-right" | "bottom-left";
   class?: string;
 }
 
-const { color = "gradient", pin = "top-right", class: className = "" } = Astro.props;
+const { color = "gradient", class: className = "" } = Astro.props;
 ---
 
 <span
   class={`highlight highlight-${color} ${className}`}
   data-reveal
 >
-  <span class={`highlight-pin pin-${pin}`} aria-hidden="true">
-    <span class="pin-line"></span>
-    <span class="pin-dot"></span>
-  </span>
   <span class="highlight-text"><slot /></span>
 </span>

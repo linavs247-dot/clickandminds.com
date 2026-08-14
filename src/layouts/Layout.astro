@@ -71,7 +71,7 @@ const pageTitle = `${title} · Click & Minds`;
     // Single shared IntersectionObserver driving every Highlight and
     // Headline reveal on the page (both mark themselves with
     // data-reveal). Deliberately not a per-instance React island: these
-    // are pure CSS transitions (see .highlight-text/.highlight-pin/
+    // are pure CSS transitions (see .highlight-text/
     // .headline-word in global.css), one shared observer is far cheaper
     // than hydrating a component per heading. prefers-reduced-motion is
     // already handled globally (transition-duration forced to ~0 in

@@ -47,7 +47,6 @@
     --card-border: color-mix(in srgb, white 7%, transparent);
     --card-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
     --divider: color-mix(in srgb, white 10%, transparent);
-    --pin-color: var(--color-lime);
     --headline-fill: linear-gradient(180deg, var(--color-white-soft) 0%, var(--color-lavender) 100%);
 
     /* Section tone="emphasis" background: a soft gradient band layered
@@ -159,60 +158,6 @@
       color-mix(in srgb, var(--color-lavender) 30%, transparent),
       color-mix(in srgb, var(--color-lavender) 30%, transparent)
     );
-  }
-
-  .highlight-pin {
-    position: absolute;
-    width: 2px;
-    height: 24px;
-    opacity: 0;
-    transition: opacity 0.3s ease-out 0.45s;
-  }
-
-  .highlight.in-view .highlight-pin {
-    opacity: 1;
-  }
-
-  .pin-top-right {
-    top: -24px;
-    right: -6px;
-  }
-
-  .pin-bottom-left {
-    bottom: -24px;
-    left: -6px;
-  }
-
-  .highlight-pin .pin-line {
-    position: absolute;
-    inset: 0;
-    left: 50%;
-    width: 2px;
-    transform: translateX(-50%);
-    background: var(--pin-color);
-  }
-
-  .highlight-pin .pin-dot {
-    position: absolute;
-    left: 50%;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--pin-color);
-    transform: translateX(-50%) scale(0.5);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.45s;
-  }
-
-  .highlight.in-view .highlight-pin .pin-dot {
-    transform: translateX(-50%) scale(1);
-  }
-
-  .pin-top-right .pin-dot {
-    top: -3px;
-  }
-
-  .pin-bottom-left .pin-dot {
-    bottom: -3px;
   }
 
   /*

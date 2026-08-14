@@ -20,7 +20,7 @@ const { copy } = Astro.props;
   <GlowOrb color="purple" size={420} class="-top-24 right-10" />
 
   <Headline as="h2" lead={copy.headlineLead} class="mx-auto text-3xl font-display font-extrabold leading-[1.15] tracking-tight sm:text-4xl">
-    <Highlight pin="bottom-left">{copy.highlight}</Highlight>
+    <Highlight>{copy.highlight}</Highlight>
   </Headline>
   <p class="mx-auto mt-5 max-w-md text-base text-[var(--fg)]/70">
     {copy.body}
